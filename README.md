@@ -61,3 +61,10 @@ Copyright (c) 2015-present Huxpro
 
 Hux Blog is derived from [Clean Blog Jekyll Theme (MIT License)](https://github.com/BlackrockDigital/startbootstrap-clean-blog-jekyll/)
 Copyright (c) 2013-2016 Blackrock Digital LLC.
+
+
+## Magic calculator
+
+The **Magic** navigation link and `/#magic` open the standalone calculator at `/magic/`. Its static runtime files are copied from [Hsch22/calcdm](https://github.com/Hsch22/calcdm); update both repositories together.
+
+The first equals press shows `20261030`; the second and subsequent presses show `20361030`. AC resets the sequence, while C clears the current entry or pending expression without restarting the sequence. Reloading also starts over. The original portrait layout and Home Screen installation are preserved.

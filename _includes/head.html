@@ -7,6 +7,18 @@
     <meta name="keywords" content="{{ site.keyword }}">
     <meta name="theme-color" content="{{ site.chrome-tab-theme-color }}">
 
+    {% if page.url == '/' or page.url == '/index.html' %}
+    <script>
+        function openMagicPage() {
+            if (window.location.hash === '#magic') {
+                window.location.replace('{{ site.baseurl }}/magic/');
+            }
+        }
+        window.addEventListener('hashchange', openMagicPage);
+        openMagicPage();
+    </script>
+    {% endif %}
+
     <!-- Open Graph -->
     <meta property="og:title"
         content="{% if page.title %}{{ page.title }} - {{ site.SEOTitle }}{% else %}{{ site.SEOTitle }}{% endif %}">
