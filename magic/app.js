@@ -454,56 +454,55 @@
   document.addEventListener('visibilitychange', () => activePointers.clear());
 
   // ---------- Events ----------
+  // Register input on contact, before movement or overlapping touches can suppress click.
+  // Track each pointer separately so releasing one finger cannot cancel another key.
+  const keyPointers = new Map();
   keypad.addEventListener('pointerdown', (e) => {
+    if (e.button !== 0) return;
     const k = e.target.closest('.key');
     if (!k) return;
     k.classList.add('pressed');
-  });
-  const release = (e) => {
-    const k = e.target.closest && e.target.closest('.key');
-    if (k) k.classList.remove('pressed');
-  };
-  keypad.addEventListener('pointerup', release);
-  keypad.addEventListener('pointercancel', release);
-  keypad.addEventListener('pointerleave', release, true);
-  keypad.addEventListener('pointerout', release);
+    const canPeek = Boolean(PREC[k.dataset.key]) && secret.target !== null && !secret.armed;
+    const gesture = { key: k, deferred: canPeek, peeking: false, timer: null };
+    keyPointers.set(e.pointerId, gesture);
 
-  let swallowClick = false;
+    // Only the existing target-peek gesture needs to distinguish a tap from a hold.
+    if (canPeek) {
+      gesture.timer = setTimeout(() => {
+        gesture.peeking = true;
+        textEl.textContent = formatNumber(neededFor(k.dataset.key));
+        fitText(textEl, displayEl);
+      }, LONG_PRESS_MS);
+    } else {
+      press(k.dataset.key);
+    }
+  });
+
+  function releaseKey(pointerId, completed) {
+    const gesture = keyPointers.get(pointerId);
+    if (!gesture) return;
+    clearTimeout(gesture.timer);
+    keyPointers.delete(pointerId);
+    if (![...keyPointers.values()].some((other) => other.key === gesture.key)) {
+      gesture.key.classList.remove('pressed');
+    }
+    if (gesture.peeking) render();
+    else if (completed && gesture.deferred) press(gesture.key.dataset.key);
+  }
+  document.addEventListener('pointerup', (e) => releaseKey(e.pointerId, true), { capture: true });
+  document.addEventListener('pointercancel', (e) => releaseKey(e.pointerId, false), { capture: true });
+  const cancelKeyPointers = () => {
+    for (const pointerId of keyPointers.keys()) releaseKey(pointerId, false);
+  };
+  window.addEventListener('blur', cancelKeyPointers);
+  document.addEventListener('visibilitychange', () => { if (document.hidden) cancelKeyPointers(); });
+
+  // Pointer clicks were already handled on contact. Keep non-pointer activation
+  // (Space, assistive technology, or button.click()) without entering a key twice.
   keypad.addEventListener('click', (e) => {
     const k = e.target.closest('.key');
-    if (!k) return;
-    if (swallowClick) { swallowClick = false; return; }
-    press(k.dataset.key);
+    if (k && e.detail === 0) press(k.dataset.key);
   });
-
-  // Hold an operator key (target set, not armed): the display shows the number the
-  // spectator would need to enter after that operator to reach the target. Releasing
-  // restores the display and does not press the operator.
-  let opPeekTimer = null;
-  let opPeeking = false;
-  keypad.addEventListener('pointerdown', (e) => {
-    const k = e.target.closest('.key.op');
-    if (!k || !PREC[k.dataset.key] || secret.target === null || secret.armed) return;
-    const op = k.dataset.key;
-    clearTimeout(opPeekTimer);
-    opPeekTimer = setTimeout(() => {
-      opPeeking = true;
-      textEl.textContent = formatNumber(neededFor(op));
-      fitText(textEl, displayEl);
-    }, LONG_PRESS_MS);
-  });
-  const endOpPeek = () => {
-    clearTimeout(opPeekTimer); opPeekTimer = null;
-    if (opPeeking) {
-      opPeeking = false;
-      swallowClick = true;
-      setTimeout(() => { swallowClick = false; }, 300);
-      render();
-    }
-  };
-  keypad.addEventListener('pointerup', endOpPeek);
-  keypad.addEventListener('pointercancel', endOpPeek);
-  keypad.addEventListener('pointerleave', endOpPeek, true);
 
   // Swipe on the display deletes the last character (iOS behaviour).
   let swipeStart = null;

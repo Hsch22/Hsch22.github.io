@@ -102,6 +102,8 @@ button svg {
    The screen aspect ratio is the same on all recent iPhones, so top offsets in --u scale fine. */
 .keypad {
   position: absolute;
+  /* A small finger movement on a key is input, not a browser pan gesture. */
+  touch-action: none;
   left: var(--pad-x);
   right: var(--pad-x);
   /* Offsets are from the top safe-area inset, so they hold whether the page starts under
@@ -115,6 +117,7 @@ button svg {
 }
 
 .key {
+  position: relative;
   height: var(--btn);
   border-radius: 50%;
   display: flex;
@@ -126,6 +129,13 @@ button svg {
   color: var(--white);
   box-shadow: inset 0 0 0 1px var(--rim);
   transition: background-color 0.28s ease-out, color 0.28s ease-out;
+}
+/* Fill the circular corners and half the 8pt gutters without changing the visuals.
+   Adjacent touch targets meet at the gutter midpoint and do not overlap. */
+.key::before {
+  content: '';
+  position: absolute;
+  inset: calc(-4 * var(--u));
 }
 .key.num { background: linear-gradient(160deg, var(--num) 55%, var(--num-dark)); }
 .key.fn  { background: linear-gradient(160deg, var(--fn) 45%, var(--fn-dark)); }
