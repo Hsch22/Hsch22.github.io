@@ -47,6 +47,12 @@ jobs:
         run: bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"
         env:
           JEKYLL_ENV: production
+      - name: Mount verified EvoPhys static site
+        run: >-
+          python3 scripts/prepare-evophys.py
+          --download
+          --archive "${{ runner.temp }}/evophys-static-20261101.tar.gz"
+          --destination _site/evophys
       - name: Upload artifact
         # Automatically uploads an artifact from the './_site' directory by default
         uses: actions/upload-pages-artifact@v3

@@ -162,6 +162,13 @@ var fetchHelper = {
  *  void respondWith(Promise<Response> r);
  */
 self.addEventListener('fetch', event => {
+  // EvoPhys media needs native byte-range requests and independent HTTP caching.
+  const requestUrl = new URL(event.request.url);
+  if (requestUrl.origin === self.location.origin &&
+      (requestUrl.pathname === '/evophys' || requestUrl.pathname.startsWith('/evophys/'))) {
+    return;
+  }
+
   // logs for debugging
   //console.log(`fetch ${event.request.url}`)
   //console.log(` - type: ${event.request.type}; destination: ${event.request.destination}`)

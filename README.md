@@ -68,3 +68,10 @@ Copyright (c) 2013-2016 Blackrock Digital LLC.
 The **Magic** navigation link and `/#magic` open the standalone calculator at `/magic/`. Its static runtime files are copied from [Hsch22/calcdm](https://github.com/Hsch22/calcdm); update both repositories together.
 
 The first equals press shows `20261030`; the second and subsequent presses show `20361030`. AC resets the sequence, while C clears the current entry or pending expression without restarting the sequence. Reloading also starts over. The original portrait layout and Home Screen installation are preserved.
+
+## EvoPhys temporary website
+
+The navigation links to [EvoPhys](https://hsch22.github.io/evophys/), with
+[WorldSimProbe](https://hsch22.github.io/evophys/WorldSimProbe/) beneath it.
+The Pages workflow builds the blog first, then restores the pinned public static
+snapshot into `_site/evophys`. See [deployment instructions](deployment/evophys/README.md).

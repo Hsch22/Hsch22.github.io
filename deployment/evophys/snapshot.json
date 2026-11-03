@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "source_snapshot": "migration-20261101",
+  "mount_path": "/evophys/",
+  "file_count": 1072,
+  "uncompressed_bytes": 504301981,
+  "manifest_sha256": "cfbe1b7df2d1dc1206da95fa10a034541eb56dd0a794abf95da363153bc2989c",
+  "archive": {
+    "name": "evophys-static-20261101.tar.gz",
+    "bytes": 498842246,
+    "sha256": "3a72de8a78faaf52a8492b5e2d2d60b57280a913f7e2ee579937bcf04668b86c",
+    "download_url": "https://github.com/Hsch22/Hsch22.github.io/releases/download/evophys-transition-20261103/evophys-static-20261101.tar.gz"
+  }
+}
