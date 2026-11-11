@@ -1,51 +1,52 @@
-# EvoPhys transition deployment
+# EvoPhys redirect deployment
 
-Public URLs:
+Since 2026-11-11, the temporary `/evophys/` mirror redirects to the official
+site at https://evophys.com. The personal blog and `/magic/` remain on GitHub Pages.
+The EvoPhys navigation entry now links directly to the official homepage.
 
-- https://hsch22.github.io/evophys/
-- https://hsch22.github.io/evophys/WorldSimProbe/
+| Old URL | Destination |
+| --- | --- |
+| `/evophys/` | `https://evophys.com/` |
+| `/evophys/WorldSimProbe/` | `https://evophys.com/WorldSimProbe/` |
+| `/evophys/mwm_v1.html` | `https://evophys.com/mwm_v1.html` |
+| Other `/evophys/…` URLs | The same path beneath `https://evophys.com/` |
 
-This is the complete 1,072-file static snapshot from 2026-11-01, mounted after
-Jekyll builds the personal blog. Its media files, including both original
-1920×1080, 60 fps homepage videos, are copied byte for byte. The archive is a
-public GitHub Release asset because the largest video exceeds Git's file limit.
-`snapshot.json` pins the archive's size, SHA-256, and the manifest's SHA-256.
-The restore step verifies every extracted file and rejects unexpected members.
+Jekyll builds small redirect pages for all six HTML documents in the original
+snapshot. `_includes/evophys-redirect.js` removes only the `/evophys` prefix,
+keeps the query string and fragment, and uses `location.replace` so Back does
+not loop through the transition page. The destination origin is fixed.
 
-Only the generated mirror is adapted: canonical/social/sitemap URLs and the home
-link use `/evophys/`; the unavailable Task 3 inference controls are disabled and
-clearly labelled. Recorded demos and the browser-based Task 1/2 interactions are
-preserved. This static host does not run `/task3-live/` or proxy the GPU backend.
-The blog's root service worker bypasses `/evophys/` so video Range requests reach
-GitHub Pages unchanged. `/magic/` and its own service worker are preserved.
+The existing custom 404 page includes the same script only in its head. This
+allows other old links, including direct asset URLs, to navigate to the matching
+production URL. Non-EvoPhys paths retain the personal site's existing 404 page.
+The root service worker still bypasses `/evophys/`, allowing these responses to
+reach the browser instead of serving the former mirror from its cache.
 
-## Build or preview
+These are browser redirects. Known HTML routes return a small HTML page;
+other retired paths initially return GitHub Pages' custom 404 and then navigate.
+They are not server-side HTTP 301/308 redirects. Embedded media and API requests
+do not execute HTML redirects and should use the official URLs directly.
 
-Use Python 3.9 or newer. Reuse the existing archive whenever it is available:
+## Build and verify
 
 ```sh
 bundle exec jekyll build
-python3 scripts/prepare-evophys.py \
-  --archive /absolute/path/evophys-static-20261101.tar.gz \
-  --destination _site/evophys
-python3 -m http.server 4000 --directory _site
 ```
 
-The destination must not already exist. `--download` retrieves the pinned release
-asset only when the archive path is absent; an existing file with the wrong size
-or hash fails explicitly. CI uses a fresh runner temporary path. Do not place the
-archive in the repository or lower video resolution to fit it into Git.
+There is no post-build archive restore or media download. The Pages workflow
+builds and deploys Jekyll from `master`. Verify the homepage and WorldSimProbe
+redirects in a browser, including a query string and fragment; check a direct
+HTML route and a route handled by the custom 404. Also check `/`, `/magic/`,
+and an unrelated missing page to confirm the redirect remains scoped.
 
-## Update or retire
+## Historical snapshot
 
-To update the mirror, create and validate a new static snapshot from the EvoPhys
-source repository, publish it under a new release tag, and update both manifest
-and receipt together. Review the strict text adaptations in
-`scripts/prepare-evophys.py` for the new snapshot, then push to `master` and wait
-for both Pages jobs to succeed. Check the two public URLs, video playback and
-HTTP Range responses, the personal homepage navigation, and `/magic/`.
+`static-manifest.json`, `snapshot.json`, and the public Release
+[evophys-transition-20261103](https://github.com/Hsch22/Hsch22.github.io/releases/tag/evophys-transition-20261103)
+remain available as the verified static backup. The deployment no longer
+fetches its 498,842,246-byte archive or copies its media. The archive and original
+1080p/60fps videos are unchanged. The previous mirror implementation is retained
+in Git commit `c55da0bbd3b5d9a9d9d4ec075e76ac016dc14caa`.
 
-To retire the transition, remove the workflow's restore step and EvoPhys nav link
-in one commit. A fresh Jekyll build will no longer contain `_site/evophys`. Keep
-the pinned release as a migration backup until the final site has been verified.
-No domain or DNS changes are required for this temporary URL.
+No DNS or primary-server changes are needed for these redirects. The independent
+live-inference backend is managed separately from GitHub Pages.

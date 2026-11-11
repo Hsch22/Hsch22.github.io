@@ -19,6 +19,10 @@
     </script>
     {% endif %}
 
+    {% if page.url == '/404.html' %}
+    <script>{% include evophys-redirect.js %}</script>
+    {% endif %}
+
     <!-- Open Graph -->
     <meta property="og:title"
         content="{% if page.title %}{{ page.title }} - {{ site.SEOTitle }}{% else %}{{ site.SEOTitle }}{% endif %}">

@@ -1,0 +1,39 @@
+{
+  "activated_on": "2026-11-11",
+  "origin": "https://evophys.com",
+  "prefix": "/evophys",
+  "mechanism": "Browser location.replace for known pages; prefix-scoped custom 404 routing for other old URLs",
+  "preserve": [
+    "pathname after /evophys",
+    "query string",
+    "fragment"
+  ],
+  "routes": [
+    {
+      "source": "/evophys/WorldSimProbe/",
+      "target": "https://evophys.com/WorldSimProbe/"
+    },
+    {
+      "source": "/evophys/",
+      "target": "https://evophys.com/"
+    },
+    {
+      "source": "/evophys/mwm_cover_core.html",
+      "target": "https://evophys.com/mwm_cover_core.html"
+    },
+    {
+      "source": "/evophys/mwm_v1.html",
+      "target": "https://evophys.com/mwm_v1.html"
+    },
+    {
+      "source": "/evophys/mwm_world_engine_v1.html",
+      "target": "https://evophys.com/mwm_world_engine_v1.html"
+    },
+    {
+      "source": "/evophys/mwm_world_policy_v1.html",
+      "target": "https://evophys.com/mwm_world_policy_v1.html"
+    }
+  ],
+  "static_mirror_enabled": false,
+  "archive_download_in_build": false
+}
