@@ -36,7 +36,7 @@ npm run check
 
 The full-screen introduction appears on the first visit in a browser session and can be reopened through the About controls. The Enter button or Escape key reveals the desktop. The default theme is dark, with translucent compact widgets and serif Newsreader headings; the theme button switches the current page to light.
 
-Publication rows link directly to papers, with separate buttons opening full metadata, figures, and BibTeX dialogs. The honors widget previews three awards; its dialog contains all seven. Selected-work covers use the official WorldSimProbe visualization and a real robot photograph from the CIFT paper. Selected-work tabs support Left/Right arrows, Home, and End. Search opens with Command/Control K, supports arrow-key navigation and Enter, and closes with Escape. Native modal dialogs contain keyboard focus and restore it when dismissed.
+Publication rows link directly to papers, with separate buttons opening full metadata, figures, and BibTeX dialogs. The honors widget previews three awards; its dialog contains all seven. Selected-work covers use the official WorldSimProbe visualization and Figure 2 from the CIFT paper. Selected-work tabs support Left/Right arrows, Home, and End. Search opens with Command/Control K, supports arrow-key navigation and Enter, and closes with Escape. Native modal dialogs contain keyboard focus and restore it when dismissed.
 
 JavaScript is required for the introduction, dialogs, search, work-tab switching, clock, and theme controls. Without JavaScript, the desktop and its direct public links remain available, including both paper links, Scholar, GitHub, and the WorldSimProbe project. Dialog content and the second selected-work panel are not available through those inactive controls.
 

@@ -438,15 +438,8 @@ body:has(dialog[open]) {
 .work-media:hover {
   filter: brightness(1.06);
 }
-/* Show one unaltered frame from the paper's 3-by-3 sequence.
-   Source 1304 x 767; top-middle photograph x442 y13, 421 x237. */
-.cift-cover img {
-  position: absolute;
-  width: 309.739%;
-  height: auto;
-  max-width: none;
-  left: -104.988%;
-  top: -5.485%;
+.cift-cover {
+  background: #fff;
 }
 .work-name {
   font-size: 12px;
