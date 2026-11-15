@@ -1,77 +1,51 @@
-[Hux Blog](https://huangxuan.me)
-================================
+# Sicheng Hu
 
-> I never expected this to become popular.
+Personal research homepage at **https://hsch22.github.io/**.
 
-![](http://huangxuan.me/img/blog-desktop.jpg)
+An English-only personal desktop with publications, research interests, scholarships and grants, and links to ongoing work. Built with semantic HTML, CSS, and a small JavaScript enhancement layer. No package installation, framework, external font service, analytics, or runtime API is required.
 
+## Develop
 
-[User Manual 👉](_doc/Manual.md)
---------------------------------------------------
-
-### Getting Started
-
-1. You will need [Ruby](https://www.ruby-lang.org/en/) and [Bundler](https://bundler.io/) to use [Jekyll](https://jekyllrb.com/). Following [Using Jekyll with Bundler](https://jekyllrb.com/tutorials/using-jekyll-with-bundler/) to fullfill the enviromental requirement.
-
-2. Installed dependencies in the `Gemfile`:
+Requires Node.js 22 or later.
 
 ```sh
-$ bundle install 
+npm start
 ```
 
-3. Serve the website (`localhost:4000` by default):
+Open the printed local URL (default: http://127.0.0.1:4173). Rebuild and reload after editing. Set `PORT` to use another local port.
 
 ```sh
-$ bundle exec jekyll serve  # alternatively, npm start
+npm run build
+npm run check
 ```
 
-### Development (Build From Source)
+`dist/` is the complete deployment artifact. GitHub Actions builds and checks pull requests, and publishes pushes to `master` through GitHub Pages.
 
-To modify the theme, you will need [Grunt](https://gruntjs.com/). There are numbers of tasks you can find in the `Gruntfile.js`, includes minifing JavaScript, compiling `.less` to `.css`, adding banners to keep the Apache 2.0 license intact, watching for changes, etc. 
+## Edit content
 
-Yes, they were inherited and are extremely old-fashioned. There is no modularization and transpilation, etc.
+| Location | Purpose |
+| --- | --- |
+| `content/profile.json` | Profile links, publication metadata, BibTeX, and all seven honors |
+| `site/index.html` | Homepage structure and personal introduction |
+| `site/styles.css` | Responsive desktop, dark/light themes, and reduced-motion rules |
+| `site/app.js` | Beijing clock, theme switch, keyboard search, paper dialogs, and copy-email action |
+| `assets/` | Locally served images, font, and favicon |
+| `docs/content-sources.md` | Content and image provenance |
+| `magic/` | Existing standalone calculator, preserved without modifications |
+| `deployment/evophys/redirects.json` | Existing EvoPhys redirect routes |
 
-Critical Jekyll-related code are located in `_include/` and `_layouts/`. Most of them are [Liquid](https://github.com/Shopify/liquid/wiki) templates.
+Publications are pre-rendered; the homepage content and research links are usable without JavaScript. Search opens with Command/Control K, supports arrow-key navigation and Enter, and closes with Escape. Native dialogs provide focus containment and return focus to their triggering controls. The default is dark; the theme button switches the current page to light.
 
-This theme uses the default code syntax highlighter of jekyll, [Rouge](http://rouge.jneen.net/), which is compatible with Pygments theme so just pick any pygments theme css (e.g. from [here](http://jwarby.github.io/jekyll-pygments-themes/languages/javascript.html) and replace the content of `highlight.less`.
+Only explicitly selected directories enter `dist/`. Development scripts, deployment records, and provenance notes are not published.
 
+## Existing URLs and cache migration
 
-### Interesting to know more? Checkout the [full user manual](_doc/Manual.md)!
+- `/magic/` and its assets/service worker are copied byte-for-byte.
+- Known `/evophys/` pages and the custom 404 retain path/query/fragment-preserving browser redirects to **https://evophys.com/**. These are browser redirects, not HTTP 301/308 responses; embedded assets and API clients should use the official domain directly.
+- `/about/` points to the new profile section.
+- `/sw.js` retires the old root-scoped blog service worker and clears only its known caches. It does not remove the calculator's `calcdm:` caches or worker.
+- The inherited Hux articles, biography, photographs, advertisements, outdated build dependencies, and unrelated `huangxuan.me` CNAME were removed. They remain in Git history. The site does not publish someone else's posts under Sicheng's identity.
 
+## Design and attribution
 
-Other Resources
----------------
-
-Ports
-- [**Hexo**](https://github.com/Kaijun/hexo-theme-huxblog) by @kaijun
-- [**React-SSR**](https://github.com/LucasIcarus/huxpro.github.io/tree/ssr) by @LucasIcarus
-
-[Starter/Boilerplate](https://github.com/huxpro/huxblog-boilerplate)
-- Out of date. Helps wanted for updating it on par with the main repo
-
-Translation
-- [🇨🇳  中文文档（有点过时）](https://github.com/Huxpro/huxpro.github.io/blob/master/_doc/README.zh.md)
-
-
-License
--------
-
-Apache License 2.0.
-Copyright (c) 2015-present Huxpro
-
-Hux Blog is derived from [Clean Blog Jekyll Theme (MIT License)](https://github.com/BlackrockDigital/startbootstrap-clean-blog-jekyll/)
-Copyright (c) 2013-2016 Blackrock Digital LLC.
-
-
-## Magic calculator
-
-The **Magic** navigation link and `/#magic` open the standalone calculator at `/magic/`. Its static runtime files are copied from [Hsch22/calcdm](https://github.com/Hsch22/calcdm); update both repositories together.
-
-The first equals press shows `20261030`; the second and subsequent presses show `20361030`. AC resets the sequence, while C clears the current entry or pending expression without restarting the sequence. Reloading also starts over. The original portrait layout and Home Screen installation are preserved.
-
-## EvoPhys temporary website
-
-The navigation links to [EvoPhys](https://hsch22.github.io/evophys/), with
-[WorldSimProbe](https://hsch22.github.io/evophys/WorldSimProbe/) beneath it.
-The Pages workflow builds the blog first, then restores the pinned public static
-snapshot into `_site/evophys`. See [deployment instructions](deployment/evophys/README.md).
+The personal-desktop composition is inspired by [hux.pro](https://hux.pro/), implemented independently for Sicheng's research and profile. This repository originally forked Hux Blog; its Apache 2.0 license is retained in `LICENSE`. Manrope is self-hosted under the SIL Open Font License in `assets/MANROPE-OFL.txt`. Research imagery and the profile image are credited in `docs/content-sources.md`.

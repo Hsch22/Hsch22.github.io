@@ -1,0 +1,75 @@
+{
+  "name": "Sicheng Hu",
+  "affiliation": "Peking University",
+  "email": "hsch224@gmail.com",
+  "scholar": "https://scholar.google.com/citations?user=5s-jlGoAAAAJ&hl=en",
+  "github": "https://github.com/Hsch22",
+  "updated": "2026-11-15",
+  "publications": [
+    {
+      "id": "worldsimprobe",
+      "name": "WorldSimProbe",
+      "title": "WorldSimProbe: Diagnosing Simulator Faithfulness in Action-Conditioned World Models for Embodied Manipulation",
+      "year": 2026,
+      "venue": "arXiv preprint",
+      "authors": "Peterson Co*, Sicheng Hu*, Chunxuan Jiao*, Hongyang Cheng, Yulin Luo, Yijie Xu, Sixiang Chen, Zhongxia Zhao, Zihao Wang, DaFeng Chi, Peidong Liu, YuTong Chen, Henghua Liu, Zhihao Yuan, Huizhu Jia, Yuzheng Zhuang, Tianle Zhang, Liang Lin, Huajie Tan, Shanghang Zhang",
+      "summary": "Do world models follow the actions they are given? Five diagnostic suites examine action realization, interaction grounding, and dynamics in robotic manipulation.",
+      "paper": "https://arxiv.org/abs/2608.09298",
+      "project": "https://evophys.com/WorldSimProbe/",
+      "image": "/assets/worldsimprobe-kitchen.png",
+      "imageAlt": "A kitchen scene used in the WorldSimProbe LIBERO evaluation",
+      "bibtex": "@misc{co2026worldsimprobe,\n  title={WorldSimProbe: Diagnosing Simulator Faithfulness in Action-Conditioned World Models for Embodied Manipulation},\n  author={Peterson Co and Sicheng Hu and Chunxuan Jiao and Hongyang Cheng and Yulin Luo and Yijie Xu and Sixiang Chen and Zhongxia Zhao and Zihao Wang and DaFeng Chi and Peidong Liu and YuTong Chen and Henghua Liu and Zhihao Yuan and Huizhu Jia and Yuzheng Zhuang and Tianle Zhang and Liang Lin and Huajie Tan and Shanghang Zhang},\n  year={2026},\n  eprint={2608.09298},\n  archivePrefix={arXiv},\n  primaryClass={cs.RO},\n  url={https://arxiv.org/abs/2608.09298}\n}"
+    },
+    {
+      "id": "cift",
+      "name": "Fidelity-Aware Data Composition",
+      "title": "Fidelity-Aware Data Composition for Robust Robot Generalization",
+      "year": 2025,
+      "venue": "arXiv preprint",
+      "authors": "Zizhao Tong*, Di Chen*, Sicheng Hu*, Hongwei Fan, Liliang Chen, Guanghui Ren, Hao Tang, Hao Dong, Ling Shao",
+      "summary": "Better robot generalization through principled mixtures of real and generated demonstrations. CIFT balances data diversity with information fidelity, using multi-view video augmentation.",
+      "paper": "https://arxiv.org/abs/2509.24797",
+      "project": null,
+      "image": "/assets/cift-robots.png",
+      "imageAlt": "Robot setup and training and test environments from the CIFT paper",
+      "bibtex": "@misc{tong2025fidelityaware,\n  title={Fidelity-Aware Data Composition for Robust Robot Generalization},\n  author={Zizhao Tong and Di Chen and Sicheng Hu and Hongwei Fan and Liliang Chen and Guanghui Ren and Hao Tang and Hao Dong and Ling Shao},\n  year={2025},\n  eprint={2509.24797},\n  archivePrefix={arXiv},\n  primaryClass={cs.RO},\n  url={https://arxiv.org/abs/2509.24797}\n}"
+    }
+  ],
+  "honors": [
+    {
+      "year": "2025–2026",
+      "name": "Cushman & Wakefield Scholarship",
+      "institution": "Peking University"
+    },
+    {
+      "year": "2026",
+      "name": "Huang Yicong Scholarship",
+      "institution": "Tong Class, Peking University"
+    },
+    {
+      "year": "2025",
+      "name": "Soong Ching Ling Grant",
+      "institution": "Peking University"
+    },
+    {
+      "year": "2024–2025",
+      "name": "May Fourth Scholarship",
+      "institution": "Peking University"
+    },
+    {
+      "year": "2024",
+      "name": "First-Class Freshman Scholarship",
+      "institution": "Peking University"
+    },
+    {
+      "year": null,
+      "name": "Xueersi Boya Scholarship",
+      "institution": "Peking University"
+    },
+    {
+      "year": null,
+      "name": "Hai Wen Scholarship",
+      "institution": "Peking University"
+    }
+  ]
+}

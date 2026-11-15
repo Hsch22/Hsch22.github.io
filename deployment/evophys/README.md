@@ -1,7 +1,7 @@
 # EvoPhys redirect deployment
 
 Since 2026-11-11, the temporary `/evophys/` mirror redirects to the official
-site at https://evophys.com. The personal blog and `/magic/` remain on GitHub Pages.
+site at https://evophys.com. The personal homepage and `/magic/` remain on GitHub Pages.
 The EvoPhys navigation entry now links directly to the official homepage.
 
 | Old URL | Destination |
@@ -11,16 +11,16 @@ The EvoPhys navigation entry now links directly to the official homepage.
 | `/evophys/mwm_v1.html` | `https://evophys.com/mwm_v1.html` |
 | Other `/evophys/…` URLs | The same path beneath `https://evophys.com/` |
 
-Jekyll builds small redirect pages for all six HTML documents in the original
-snapshot. `_includes/evophys-redirect.js` removes only the `/evophys` prefix,
+The static builder creates small redirect pages for all six HTML documents in the original
+snapshot. `site/evophys-redirect.js` removes only the `/evophys` prefix,
 keeps the query string and fragment, and uses `location.replace` so Back does
 not loop through the transition page. The destination origin is fixed.
 
 The existing custom 404 page includes the same script only in its head. This
 allows other old links, including direct asset URLs, to navigate to the matching
 production URL. Non-EvoPhys paths retain the personal site's existing 404 page.
-The root service worker still bypasses `/evophys/`, allowing these responses to
-reach the browser instead of serving the former mirror from its cache.
+The old root service worker is retired by `site/retire-sw.js`. The independent
+`/magic/` service worker and its caches remain unchanged.
 
 These are browser redirects. Known HTML routes return a small HTML page;
 other retired paths initially return GitHub Pages' custom 404 and then navigate.
@@ -30,11 +30,12 @@ do not execute HTML redirects and should use the official URLs directly.
 ## Build and verify
 
 ```sh
-bundle exec jekyll build
+npm run build
+npm run check
 ```
 
 There is no post-build archive restore or media download. The Pages workflow
-builds and deploys Jekyll from `master`. Verify the homepage and WorldSimProbe
+builds and deploys `dist/` from `master`. Verify the homepage and WorldSimProbe
 redirects in a browser, including a query string and fragment; check a direct
 HTML route and a route handled by the custom 404. Also check `/`, `/magic/`,
 and an unrelated missing page to confirm the redirect remains scoped.
