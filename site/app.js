@@ -10,7 +10,7 @@ function applyTheme(theme) {
     `Switch to ${theme === "dark" ? "light" : "dark"} theme`,
   );
   document.querySelector('meta[name="theme-color"]').content =
-    theme === "dark" ? "#171c1d" : "#f0f0e9";
+    theme === "dark" ? "#171a21" : "#e7e8ed";
 }
 
 themeButton.addEventListener("click", () => {
@@ -105,10 +105,10 @@ for (const button of document.querySelectorAll("[data-paper]")) {
     document.getElementById(`paper-${button.dataset.paper}`).showModal(),
   );
 }
-for (const dialog of document.querySelectorAll("dialog")) {
-  dialog
-    .querySelector(".dialog-close")
-    .addEventListener("click", () => dialog.close());
+for (const button of document.querySelectorAll(".dialog-close")) {
+  button.addEventListener("click", () => button.closest("dialog").close());
+}
+for (const dialog of document.querySelectorAll("dialog:not(.intro)")) {
   dialog.addEventListener("click", (event) => {
     const rect = dialog.getBoundingClientRect();
     if (
@@ -119,6 +119,76 @@ for (const dialog of document.querySelectorAll("dialog")) {
         event.clientY > rect.bottom)
     )
       dialog.close();
+  });
+}
+
+const intro = document.querySelector("#about");
+const introKey = "sicheng-intro-v2";
+function openDetail(id) {
+  const dialog = document.getElementById(id);
+  if (!(dialog instanceof HTMLDialogElement))
+    throw new Error(`Unknown dialog: ${id}`);
+  document.querySelector("dialog[open]")?.close();
+  dialog.showModal();
+}
+for (const button of document.querySelectorAll("[data-about]")) {
+  button.addEventListener("click", () => openDetail("about"));
+}
+for (const button of document.querySelectorAll("[data-open]")) {
+  button.addEventListener("click", () => openDetail(button.dataset.open));
+}
+document
+  .querySelector("#enter-desktop")
+  .addEventListener("click", () => intro.close());
+intro.addEventListener("close", () => {
+  sessionStorage.setItem(introKey, "seen");
+  document.querySelector(".desktop-scene").classList.add("entering");
+});
+document
+  .querySelector(".desktop-scene")
+  .addEventListener("animationend", (event) => {
+    if (event.animationName === "desktop-in")
+      event.currentTarget.classList.remove("entering");
+  });
+const detailIds = new Set(["about", "honors", "contact"]);
+document.addEventListener("click", (event) => {
+  const link = event.target.closest('a[href^="#"]');
+  if (link && detailIds.has(link.hash.slice(1))) {
+    event.preventDefault();
+    openDetail(link.hash.slice(1));
+  }
+});
+window.addEventListener("hashchange", () => {
+  if (detailIds.has(location.hash.slice(1))) openDetail(location.hash.slice(1));
+});
+
+const workTabs = [...document.querySelectorAll("[data-work]")];
+function selectWork(tab) {
+  for (const item of workTabs) {
+    const selected = item === tab;
+    item.setAttribute("aria-selected", String(selected));
+    item.tabIndex = selected ? 0 : -1;
+    document.getElementById(item.getAttribute("aria-controls")).hidden =
+      !selected;
+  }
+  document.querySelector("#work-year").textContent =
+    tab.dataset.work === "worldsimprobe" ? "2026" : "2025";
+}
+for (const tab of workTabs) {
+  tab.addEventListener("click", () => selectWork(tab));
+  tab.addEventListener("keydown", (event) => {
+    if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+    event.preventDefault();
+    const index = workTabs.indexOf(tab);
+    const next =
+      event.key === "Home"
+        ? 0
+        : event.key === "End"
+          ? workTabs.length - 1
+          : (index + (event.key === "ArrowRight" ? 1 : -1) + workTabs.length) %
+            workTabs.length;
+    selectWork(workTabs[next]);
+    workTabs[next].focus();
   });
 }
 
@@ -173,3 +243,7 @@ if ("serviceWorker" in navigator) {
       ),
     );
 }
+
+// Open the introduction after all desktop controls have been initialized.
+if (detailIds.has(location.hash.slice(1))) openDetail(location.hash.slice(1));
+else if (!sessionStorage.getItem(introKey)) intro.showModal();

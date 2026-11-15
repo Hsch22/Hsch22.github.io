@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="dark light" />
-    <meta name="theme-color" content="#171c1d" />
+    <meta name="theme-color" content="#171a21" />
     <title>Sicheng Hu — World Models & Embodied AI</title>
     <meta
       name="description"
@@ -28,7 +28,7 @@
     <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
     <link
       rel="preload"
-      href="/assets/manrope.ttf"
+      href="/assets/newsreader.ttf"
       as="font"
       type="font/ttf"
       crossorigin
@@ -42,222 +42,25 @@
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
-    <div class="ambient" aria-hidden="true"></div>
-    <header class="topbar wrap">
-      <a class="wordmark" href="/" aria-label="Sicheng Hu home"
-        ><span class="monogram" aria-hidden="true">sh</span> Sicheng's
-        space<span class="wordmark-dot">.</span></a
-      >
-      <div class="topbar-actions">
-        <span class="topbar-note">A work in progress, just like me.</span>
+    <div class="atmosphere" aria-hidden="true">
+      <div class="haze haze-one"></div>
+      <div class="haze haze-two"></div>
+      <div class="grain"></div>
+    </div>
+    <main class="desktop-scene" id="main">
+      <header class="desktop-header">
         <button
-          class="icon-button theme-toggle"
+          class="identity-mark"
+          data-about
           type="button"
-          aria-label="Switch to light theme"
-          title="Switch theme"
+          aria-label="About Sicheng Hu"
         >
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.5"
-            aria-hidden="true"
-          >
-            <circle cx="12" cy="12" r="4" />
-            <path
-              d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"
-            />
-          </svg>
+          sicheng<span>_</span>
         </button>
-      </div>
-    </header>
-    <main id="main" class="wrap">
-      <section class="welcome" aria-labelledby="welcome-title">
-        <p class="greeting">
-          <span class="status-dot" aria-hidden="true"></span
-          ><span id="greeting">Hello there</span
-          ><span class="greeting-line" aria-hidden="true"></span
-          ><span>Welcome to my corner of the internet</span>
-        </p>
-        <h1 id="welcome-title">Hi, I'm Sicheng<span>.</span></h1>
-        <p class="welcome-description">
-          Exploring how machines understand<br class="mobile-break" />
-          and act in the physical world.
-        </p>
-      </section>
-
-      <div class="desktop">
-        <section
-          class="panel profile-panel"
-          id="about"
-          aria-labelledby="about-title"
-        >
-          <div class="panel-heading">
-            <h2 id="about-title">A little about me</h2>
-            <span class="small-star" aria-hidden="true">✳</span>
-          </div>
-          <div class="identity">
-            <img
-              src="/assets/sicheng-hu.jpg"
-              alt="Sicheng Hu sitting outdoors at sunset"
-              width="72"
-              height="72"
-            />
-            <div>
-              <h3>{{NAME}}</h3>
-              <p>{{AFFILIATION}}</p>
-            </div>
-          </div>
-          <p class="profile-copy">
-            I work on <strong>world models</strong> and
-            <strong>embodied intelligence</strong>, with an interest in what
-            makes a model useful in the physical world.
-          </p>
-          <p class="profile-copy secondary">
-            From data and training to inference and evaluation, I enjoy
-            connecting research ideas with working systems.
-          </p>
-          <a class="text-link" href="mailto:{{EMAIL}}"
-            >Let's connect <span aria-hidden="true">↗</span></a
-          >
-        </section>
-
-        <section class="panel featured-panel" aria-labelledby="featured-title">
-          <div class="panel-heading">
-            <h2 id="featured-title">On my research desk</h2>
-            <span class="quiet-label">2026</span>
-          </div>
-          <a class="featured-link" href="https://evophys.com/WorldSimProbe/">
-            <div class="research-visual">
-              <div class="visual-grid" aria-hidden="true"></div>
-              <div class="scene scene-one">
-                <img
-                  src="/assets/worldsimprobe-kitchen.png"
-                  alt="Simulated kitchen scene from WorldSimProbe"
-                  width="256"
-                  height="256"
-                /><span>LIBERO</span>
-              </div>
-              <div class="scene scene-two">
-                <img
-                  src="/assets/worldsimprobe-scene.png"
-                  alt="Bottle manipulation scene from WorldSimProbe"
-                  width="256"
-                  height="256"
-                /><span>RoboTwin</span>
-              </div>
-              <span class="visual-caption">action → motion → interaction</span>
-              <span class="round-arrow" aria-hidden="true">↗</span>
-            </div>
-            <div class="featured-copy">
-              <span class="project-tag">World models · Evaluation</span>
-              <h3>WorldSimProbe</h3>
-              <p>When a world model looks right,<br />does it act right?</p>
-            </div>
-          </a>
-          <div class="project-foot">
-            <span>5 diagnostic suites</span
-            ><span class="divider-dot" aria-hidden="true">·</span
-            ><span>6 open-source models</span>
-          </div>
-        </section>
-
-        <div class="right-stack">
-          <section class="panel clock-panel" aria-labelledby="clock-title">
-            <div class="panel-heading">
-              <h2 id="clock-title">Beijing time</h2>
-              <svg
-                class="globe-icon"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.3"
-                aria-hidden="true"
-              >
-                <circle cx="12" cy="12" r="9" />
-                <ellipse cx="12" cy="12" rx="4" ry="9" />
-                <path d="M3 12h18" />
-              </svg>
-            </div>
-            <time id="beijing-time" class="clock-time">UTC+8</time>
-            <p class="clock-date" id="beijing-date">China Standard Time</p>
-            <div class="clock-bottom">
-              <span class="status-dot" aria-hidden="true"></span> A moment in
-              Beijing
-            </div>
-          </section>
-          <section class="panel focus-panel" aria-labelledby="focus-title">
-            <div class="panel-heading">
-              <h2 id="focus-title">Things I think about</h2>
-            </div>
-            <ul class="focus-list">
-              <li>
-                <span class="focus-symbol green" aria-hidden="true">◎</span
-                >World models
-              </li>
-              <li>
-                <span class="focus-symbol peach" aria-hidden="true">↗</span
-                >Robot learning
-              </li>
-              <li>
-                <span class="focus-symbol lilac" aria-hidden="true">⌘</span
-                >Efficient AI systems
-              </li>
-            </ul>
-          </section>
-        </div>
-
-        <section
-          class="panel publications-panel"
-          id="research"
-          aria-labelledby="publications-title"
-        >
-          <div class="panel-heading">
-            <h2 id="publications-title">Selected publications</h2>
-            <a class="subtle-link" href="{{SCHOLAR}}"
-              >Google Scholar <span aria-hidden="true">↗</span></a
-            >
-          </div>
-          <div class="publication-list">{{PUBLICATIONS}}</div>
-          <p class="contribution-note">
-            * Equal contribution. Publication status follows the linked
-            preprints.
-          </p>
-        </section>
-
-        <section
-          class="panel honors-panel"
-          id="honors"
-          aria-labelledby="honors-title"
-        >
-          <div class="panel-heading">
-            <h2 id="honors-title">Along the way</h2>
-            <svg
-              class="honor-icon"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.5"
-              aria-hidden="true"
-            >
-              <circle cx="12" cy="8" r="5" />
-              <path d="m8 12-2 9 6-3 6 3-2-9" />
-            </svg>
-          </div>
-          <p class="panel-subtitle">Scholarships & grants</p>
-          <ol class="honors-list">
-            {{HONORS}}
-          </ol>
-        </section>
-
-        <section
-          class="panel elsewhere-panel"
-          aria-labelledby="elsewhere-title"
-        >
-          <div class="panel-heading">
-            <h2 id="elsewhere-title">Around the web</h2>
-            <span aria-hidden="true">↗</span>
-          </div>
+        <h1 id="greeting">Hello there</h1>
+      </header>
+      <div class="workspace">
+        <div class="desk-column">
           <div class="shortcut-grid">
             <a class="shortcut" href="{{SCHOLAR}}"
               ><span class="app-icon scholar-icon" aria-hidden="true"
@@ -291,118 +94,303 @@
               ><span>Magic</span></a
             >
           </div>
-        </section>
 
-        <section
-          class="panel contact-panel"
-          id="contact"
-          aria-labelledby="contact-title"
-        >
-          <div class="panel-heading">
-            <h2 id="contact-title">Say hello</h2>
-            <span class="contact-orbit" aria-hidden="true">↗</span>
-          </div>
-          <p>Ideas, questions,<br />or a shared curiosity?</p>
-          <div class="contact-actions">
-            <a href="mailto:{{EMAIL}}">{{EMAIL}}</a
-            ><button
-              class="icon-button"
-              id="copy-email"
-              type="button"
-              aria-label="Copy email address"
-              title="Copy email address"
+          <section class="widget time-widget" aria-labelledby="time-title">
+            <div class="widget-heading">
+              <h2 id="time-title">
+                Beijing <span class="subscript">UTC+8</span>
+              </h2>
+              <span class="orbit" aria-hidden="true">◌</span>
+            </div>
+            <div class="time-row">
+              <time id="beijing-time">UTC+8</time>
+              <p id="beijing-date">China Standard Time</p>
+            </div>
+          </section>
+          <section
+            class="widget papers-widget"
+            id="research"
+            aria-labelledby="research-title"
+          >
+            <div class="widget-heading">
+              <h2 id="research-title">papers</h2>
+              <a href="{{SCHOLAR}}" aria-label="View Google Scholar">↗</a>
+            </div>
+            <div class="paper-list">{{PUBLICATIONS}}</div>
+            <p class="widget-footnote">World models & robot learning</p>
+          </section>
+        </div>
+        <div class="desk-column middle-column">
+          <section
+            class="widget identity-widget"
+            aria-labelledby="identity-title"
+          >
+            <img
+              class="portrait"
+              src="/assets/sicheng-hu.jpg"
+              alt="Sicheng Hu seated outdoors"
+              width="80"
+              height="80"
+            />
+            <div>
+              <h2 id="identity-title">{{NAME}}</h2>
+              <p>{{AFFILIATION}}</p>
+              <button type="button" data-about class="inline-link">
+                A little about me <span>↗</span>
+              </button>
+            </div>
+          </section>
+          <section
+            class="widget interests-widget"
+            aria-labelledby="interests-title"
+          >
+            <div class="widget-heading">
+              <h2 id="interests-title">exploring</h2>
+              <span class="subscript">ongoing</span>
+            </div>
+            <a href="https://evophys.com/WorldSimProbe/"
+              ><span class="interest-glyph">◎</span><span>World models</span
+              ><span class="row-note">simulate</span></a
             >
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.5"
-                aria-hidden="true"
+            <a href="https://arxiv.org/abs/2509.24797"
+              ><span class="interest-glyph">⌁</span><span>Robot learning</span
+              ><span class="row-note">generalize</span></a
+            >
+            <a href="{{GITHUB}}"
+              ><span class="interest-glyph">⌘</span
+              ><span>Research engineering</span
+              ><span class="row-note">build</span></a
+            >
+          </section>
+          <section
+            class="widget question-widget"
+            aria-labelledby="question-title"
+          >
+            <div class="widget-heading">
+              <h2 id="question-title">a question I keep coming back to</h2>
+            </div>
+            <p>When does a world model<br />become a simulator?</p>
+            <a href="https://evophys.com/WorldSimProbe/" class="question-source"
+              >on action, interaction & physics <span>↗</span></a
+            >
+          </section>
+        </div>
+        <div class="desk-column">
+          <section class="widget work-widget" aria-labelledby="work-title">
+            <div class="widget-heading">
+              <h2 id="work-title">selected work</h2>
+              <span class="subscript" id="work-year">2026</span>
+            </div>
+            <div class="work-tabs" role="tablist" aria-label="Research project">
+              <button
+                type="button"
+                role="tab"
+                aria-selected="true"
+                aria-controls="work-worldsimprobe"
+                id="tab-worldsimprobe"
+                data-work="worldsimprobe"
               >
-                <rect x="8" y="8" width="12" height="12" rx="3" />
-                <path
-                  d="M15 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h3"
-                />
-              </svg>
+                WorldSimProbe
+              </button>
+              <button
+                type="button"
+                role="tab"
+                aria-selected="false"
+                aria-controls="work-cift"
+                id="tab-cift"
+                data-work="cift"
+                tabindex="-1"
+              >
+                CIFT
+              </button>
+            </div>
+            <div
+              role="tabpanel"
+              aria-labelledby="tab-worldsimprobe"
+              id="work-worldsimprobe"
+            >
+              <a
+                href="https://evophys.com/WorldSimProbe/"
+                class="work-media single"
+                ><img
+                  src="/assets/worldsimprobe-kitchen.png"
+                  alt="Robot arm in a kitchen manipulation environment"
+              /></a>
+              <a href="https://evophys.com/WorldSimProbe/" class="work-name"
+                >WorldSimProbe <span>↗</span></a
+              >
+              <p class="work-description">Looking beyond plausible pixels.</p>
+            </div>
+            <div
+              role="tabpanel"
+              aria-labelledby="tab-cift"
+              id="work-cift"
+              hidden
+            >
+              <a
+                href="https://arxiv.org/abs/2509.24797"
+                class="work-media single"
+                ><img
+                  src="/assets/cift-robots.png"
+                  alt="CIFT robot setup and training environments"
+                  loading="lazy"
+              /></a>
+              <a href="https://arxiv.org/abs/2509.24797" class="work-name"
+                >Fidelity-Aware Data Composition <span>↗</span></a
+              >
+              <p class="work-description">
+                Better data. More generalizable robots.
+              </p>
+            </div>
+          </section>
+          <section
+            class="widget honors-widget"
+            aria-labelledby="honors-preview-title"
+          >
+            <div class="widget-heading">
+              <h2 id="honors-preview-title">along the way</h2>
+              <button
+                type="button"
+                data-open="honors"
+                aria-label="View all seven scholarships and grants"
+              >
+                ↗
+              </button>
+            </div>
+            <ul class="honors-preview">
+              {{HONORS_PREVIEW}}
+            </ul>
+            <button type="button" data-open="honors" class="all-honors">
+              All scholarships & grants <span>7</span>
             </button>
-          </div>
-          <span class="sr-only" id="copy-status" role="status"></span>
-        </section>
+          </section>
+        </div>
       </div>
-      <footer class="footer">
-        <span>© 2026 Sicheng Hu</span><span>A small space. An open mind.</span
-        ><span>Updated November 2026</span>
+      <footer class="desktop-footer">
+        <span>Sicheng Hu · Peking University</span
+        ><button
+          type="button"
+          class="theme-toggle"
+          aria-label="Switch to light theme"
+        >
+          Change atmosphere <span aria-hidden="true">◐</span>
+        </button>
       </footer>
     </main>
-
-    <nav class="dock" aria-label="Main navigation">
-      <a href="#about" aria-label="About Sicheng" title="About"
-        ><svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.6"
-          aria-hidden="true"
-        >
-          <circle cx="12" cy="8" r="4" />
-          <path d="M4 21v-2a8 8 0 0 1 16 0v2" /></svg
-        ><span>About</span></a
-      >
-      <a href="#research" aria-label="Research publications" title="Research"
-        ><svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.6"
-          aria-hidden="true"
-        >
-          <path d="M5 3h10l4 4v14H5V3Zm9 0v5h5M8 12h8m-8 4h6" /></svg
-        ><span>Research</span></a
-      >
-      <a href="#honors" aria-label="Scholarships and grants" title="Honors"
-        ><svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.6"
-          aria-hidden="true"
-        >
-          <circle cx="12" cy="8" r="5" />
-          <path d="m8 12-2 9 6-3 6 3-2-9" /></svg
-        ><span>Honors</span></a
-      >
-      <a href="#contact" aria-label="Contact Sicheng" title="Contact"
-        ><svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.6"
-          aria-hidden="true"
-        >
-          <rect x="3" y="5" width="18" height="14" rx="3" />
-          <path d="m3 6 9 7 9-7" /></svg
-        ><span>Contact</span></a
-      >
-      <span class="dock-separator" aria-hidden="true"></span>
+    <div class="command-dock">
       <button
         id="open-search"
         type="button"
         aria-label="Search this site (Command or Control K)"
-        title="Search · ⌘K"
       >
         <svg
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          stroke-width="1.6"
+          stroke-width="1.4"
           aria-hidden="true"
         >
           <circle cx="10.5" cy="10.5" r="6.5" />
           <path d="m16 16 5 5" /></svg
-        ><span>Search</span><kbd>⌘ K</kbd>
+        ><span>Search or jump to…</span><kbd>⌘ K</kbd></button
+      ><button
+        class="about-orb"
+        data-about
+        type="button"
+        aria-label="About Sicheng Hu"
+      >
+        ✧
       </button>
-    </nav>
+    </div>
 
+    <dialog id="about" class="intro" aria-labelledby="intro-title">
+      <div class="edge-light" aria-hidden="true"></div>
+      <div class="intro-content">
+        <div class="intro-kicker">
+          <img
+            src="/assets/sicheng-hu.jpg"
+            alt=""
+            width="32"
+            height="32"
+          /><span>Sicheng Hu</span>
+        </div>
+        <h2 id="intro-title" tabindex="-1" autofocus>Hello, I'm Sicheng.</h2>
+        <p>
+          I’m interested in how machines understand the physical world — and
+          learn to act in it.
+        </p>
+        <p>
+          At <a href="https://www.pku.edu.cn/">Peking University</a>, I work on
+          <em>world models</em> and <em>embodied intelligence</em>. I’m drawn to
+          the gap between a model that generates something convincing and one
+          that faithfully responds to an action.
+        </p>
+        <p>
+          With <a href="https://evophys.com/WorldSimProbe/">WorldSimProbe</a>, I
+          study that gap through simulator evaluation. With
+          <a href="https://arxiv.org/abs/2509.24797">CIFT</a>, I explore how the
+          composition of real and generated data shapes robot generalization.
+        </p>
+        <p>
+          I also enjoy the engineering that makes research possible: working
+          with data, training models, and getting inference and evaluation to
+          run well.
+        </p>
+        <p class="intro-postscript">
+          A few papers, a few experiments, and plenty of open questions.<br />Welcome
+          to my space.
+        </p>
+        <div class="intro-actions">
+          <button type="button" class="enter-button" id="enter-desktop">
+            Enter <kbd>esc</kbd><span aria-hidden="true">↗</span>
+          </button>
+          <div class="intro-social">
+            <a href="{{SCHOLAR}}">Scholar ↗</a><a href="{{GITHUB}}">GitHub ↗</a
+            ><a href="mailto:{{EMAIL}}">Email ↗</a>
+          </div>
+        </div>
+      </div>
+    </dialog>
+    <dialog id="honors" class="detail-dialog" aria-labelledby="honors-title">
+      <div class="dialog-heading">
+        <div>
+          <p class="eyebrow">Peking University</p>
+          <h2 id="honors-title">Along the way.</h2>
+        </div>
+        <button
+          class="dialog-close"
+          type="button"
+          aria-label="Close scholarships and grants"
+        >
+          ×
+        </button>
+      </div>
+      <p class="detail-intro">Scholarships & grants</p>
+      <ol class="honors-list">
+        {{HONORS}}
+      </ol>
+    </dialog>
+    <dialog
+      id="contact"
+      class="detail-dialog contact-dialog"
+      aria-labelledby="contact-title"
+    >
+      <div class="dialog-heading">
+        <h2 id="contact-title">Say hello.</h2>
+        <button class="dialog-close" type="button" aria-label="Close contact">
+          ×
+        </button>
+      </div>
+      <p class="detail-intro">For research, ideas, or a shared curiosity.</p>
+      <div class="contact-actions">
+        <a href="mailto:{{EMAIL}}">{{EMAIL}}</a
+        ><button id="copy-email" type="button" aria-label="Copy email address">
+          Copy
+        </button>
+      </div>
+      <span id="copy-status" role="status"></span
+      ><a class="inline-link" href="{{SCHOLAR}}">Google Scholar ↗</a>
+    </dialog>
     <dialog
       id="search-dialog"
       class="search-dialog"
@@ -469,9 +457,7 @@
           <a href="/magic/"><span>Magic calculator</span><span>Tool</span></a>
         </li>
         <li>
-          <a href="mailto:{{EMAIL}}"
-            ><span>Say hello</span><span>Email ↗</span></a
-          >
+          <a href="#contact"><span>Say hello</span><span>Email ↗</span></a>
         </li>
       </ul>
       <p id="search-empty" hidden>
@@ -481,6 +467,14 @@
         Type to filter <span>↑ ↓ to move · Enter to open · Esc to close</span>
       </p>
     </dialog>
+
     {{PAPER_DIALOGS}}
+    <noscript
+      ><style>
+        .command-dock {
+          display: none;
+        }
+      </style></noscript
+    >
   </body>
 </html>

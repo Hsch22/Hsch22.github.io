@@ -82,11 +82,9 @@ const paperLinks = (p) =>
 const publications = profile.publications
   .map(
     (p) => `<article class="publication" data-publication="${escape(p.id)}">
-  <img class="publication-thumbnail" src="${escape(p.image)}" alt="${escape(p.imageAlt)}" width="105" height="100" loading="lazy">
-  <div><div class="publication-meta"><span class="year">${p.year}</span><span>·</span><span>${escape(p.venue)}</span><span>·</span><span>Co-first author</span></div>
-  <h3><a href="${escape(p.paper)}">${escape(p.title)}</a></h3>
-  <p class="publication-authors">${authors(p.authors.split(", ").slice(0, 3).join(", "))}, et al.</p>
-  <div class="publication-actions">${paperLinks(p)}<button type="button" data-paper="${escape(p.id)}" aria-haspopup="dialog" aria-controls="paper-${escape(p.id)}" aria-label="Details and citation for ${escape(p.name)}">Details & citation</button></div></div>
+  <a class="publication-link" href="${escape(p.paper)}">${escape(p.name)}</a>
+  <small class="publication-year">${p.year}</small>
+  <button class="publication-details" type="button" data-paper="${escape(p.id)}" aria-haspopup="dialog" aria-controls="paper-${escape(p.id)}" aria-label="Details and citation for ${escape(p.name)}"><span aria-hidden="true">↗</span></button>
 </article>`,
   )
   .join("\n");
@@ -120,6 +118,13 @@ const replacements = {
   GITHUB: escape(profile.github),
   PUBLICATIONS: publications,
   HONORS: honors,
+  HONORS_PREVIEW: profile.honors
+    .slice(0, 3)
+    .map(
+      (h) =>
+        `<li class="honor-preview"><span>${escape(h.name)}</span>${h.year ? `<small>${escape(h.year)}</small>` : ""}</li>`,
+    )
+    .join("\n"),
   PAPER_DIALOGS: paperDialogs,
   PERSON_JSON: JSON.stringify({
     "@context": "https://schema.org",
@@ -141,8 +146,8 @@ await rm(out, { recursive: true, force: true });
 await mkdir(out, { recursive: true });
 await writeFile(path.join(out, "index.html"), html);
 await Promise.all(
-  ["styles.css", "app.js", "evophys-redirect.js", "magic-entry.js"].map((file) =>
-    cp(path.join(root, "site", file), path.join(out, file)),
+  ["styles.css", "app.js", "evophys-redirect.js", "magic-entry.js"].map(
+    (file) => cp(path.join(root, "site", file), path.join(out, file)),
   ),
 );
 await cp(path.join(root, "site/retire-sw.js"), path.join(out, "sw.js"));
