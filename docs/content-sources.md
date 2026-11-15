@@ -20,4 +20,4 @@ The introduction is shown once per browser session and remains available through
 ## Selected-work covers
 
 - WorldSimProbe: `assets/worldsimprobe-distributions.jpg` is the original [evaluation-gap visualization](https://evophys.com/WorldSimProbe/assets/images/evaluation-gap.jpg?v=2) from the project page. The cover displays the whole figure with its original colors.
-- CIFT: `assets/cift-cloth-folding.png` is the original [Figure 25 image](https://arxiv.org/html/2509.24797v1/fold_the_cloth_2.png) from the paper. CSS frames the top-middle photograph (x442, y13, width421, height237) of the real robot folding sequence. The underlying image is unmodified.
+- CIFT: `assets/cift-fig2.png` is the original [Figure 2 image](https://arxiv.org/html/2509.24797v1/mvaug.png), the MVAug architecture overview, as explicitly requested by the owner. The cover displays the complete, unmodified figure without cropping.
