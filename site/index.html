@@ -61,40 +61,25 @@
       </header>
       <div class="workspace">
         <div class="desk-column">
-          <div class="shortcut-grid">
-            <a class="shortcut" href="{{SCHOLAR}}"
-              ><span class="app-icon scholar-icon" aria-hidden="true"
-                ><svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.5"
-                >
-                  <path
-                    d="m2 9 10-5 10 5-10 5L2 9Zm4 2v6c3 3 9 3 12 0v-6m3-1v7"
-                  /></svg></span
-              ><span>Scholar</span></a
-            >
-            <a class="shortcut" href="{{GITHUB}}"
-              ><span class="app-icon github-icon" aria-hidden="true"
-                ><svg viewBox="0 0 24 24" fill="currentColor">
-                  <path
-                    d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.86c-2.78.6-3.37-1.18-3.37-1.18-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.64-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.26-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02A9.6 9.6 0 0 1 12 6.82c.85 0 1.71.11 2.51.34 1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.39.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85v2.75c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"
-                  /></svg></span
-              ><span>GitHub</span></a
-            >
-            <a class="shortcut" href="https://evophys.com/"
-              ><span class="app-icon evophys-icon" aria-hidden="true"
-                >e<span>↗</span></span
-              ><span>EvoPhys</span></a
-            >
-            <a class="shortcut" href="/magic/"
-              ><span class="app-icon magic-icon" aria-hidden="true"
-                >÷<span>+</span></span
-              ><span>Magic</span></a
-            >
-          </div>
-
+          <section
+            class="widget identity-widget"
+            aria-labelledby="identity-title"
+          >
+            <img
+              class="portrait"
+              src="/assets/sicheng-hu.jpg"
+              alt="Sicheng Hu seated outdoors"
+              width="80"
+              height="80"
+            />
+            <div>
+              <h2 id="identity-title">{{NAME}}</h2>
+              <p>{{AFFILIATION}}</p>
+              <button type="button" data-about class="inline-link">
+                A little about me <span>↗</span>
+              </button>
+            </div>
+          </section>
           <section class="widget time-widget" aria-labelledby="time-title">
             <div class="widget-heading">
               <h2 id="time-title">
@@ -121,25 +106,6 @@
           </section>
         </div>
         <div class="desk-column middle-column">
-          <section
-            class="widget identity-widget"
-            aria-labelledby="identity-title"
-          >
-            <img
-              class="portrait"
-              src="/assets/sicheng-hu.jpg"
-              alt="Sicheng Hu seated outdoors"
-              width="80"
-              height="80"
-            />
-            <div>
-              <h2 id="identity-title">{{NAME}}</h2>
-              <p>{{AFFILIATION}}</p>
-              <button type="button" data-about class="inline-link">
-                A little about me <span>↗</span>
-              </button>
-            </div>
-          </section>
           <section
             class="widget interests-widget"
             aria-labelledby="interests-title"
@@ -211,10 +177,12 @@
             >
               <a
                 href="https://evophys.com/WorldSimProbe/"
-                class="work-media single"
+                class="work-media worldsimprobe-cover"
                 ><img
-                  src="/assets/worldsimprobe-kitchen.png"
-                  alt="Robot arm in a kitchen manipulation environment"
+                  src="/assets/worldsimprobe-distributions.jpg"
+                  alt="Action trajectory distributions visualized in WorldSimProbe"
+                  width="1536"
+                  height="1024"
               /></a>
               <a href="https://evophys.com/WorldSimProbe/" class="work-name"
                 >WorldSimProbe <span>↗</span></a
@@ -229,10 +197,12 @@
             >
               <a
                 href="https://arxiv.org/abs/2509.24797"
-                class="work-media single"
+                class="work-media cift-cover"
                 ><img
-                  src="/assets/cift-robots.png"
-                  alt="CIFT robot setup and training environments"
+                  src="/assets/cift-cloth-folding.png"
+                  alt="Two real robot arms folding a blue cloth on a wooden table"
+                  width="1304"
+                  height="767"
                   loading="lazy"
               /></a>
               <a href="https://arxiv.org/abs/2509.24797" class="work-name"
