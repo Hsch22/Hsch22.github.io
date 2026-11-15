@@ -253,70 +253,6 @@ body:has(dialog[open]) {
   color: var(--quiet);
   margin-top: 17px;
 }
-.shortcut-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-  padding: 0 4px 4px;
-}
-.shortcut {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  font-size: 10px;
-  color: var(--muted);
-}
-.app-icon {
-  width: 59px;
-  height: 59px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 15px;
-  box-shadow:
-    0 5px 12px #0003,
-    inset 0 1px 1px #ffffff24;
-  transition: transform 0.2s;
-}
-.shortcut:hover .app-icon {
-  transform: translateY(-4px);
-}
-.app-icon svg {
-  width: 31px;
-  height: 31px;
-}
-.scholar-icon {
-  background: linear-gradient(145deg, #398cef, #2b58bf);
-  color: white;
-}
-.github-icon {
-  background: linear-gradient(145deg, #3d4049, #24262d);
-  color: #f4f4f6;
-}
-.evophys-icon {
-  background: linear-gradient(145deg, #f1e6b1, #c9b166);
-  color: #35301f;
-  font-family: var(--serif);
-  font-size: 46px;
-  position: relative;
-}
-.evophys-icon > span {
-  font: 12px var(--sans);
-  position: absolute;
-  right: 9px;
-  top: 6px;
-}
-.magic-icon {
-  background: linear-gradient(145deg, #beb8df, #8a80b2);
-  color: #252139;
-  font: 38px var(--serif);
-  gap: 2px;
-}
-.magic-icon > span {
-  font-size: 23px;
-  transform: translateY(-7px);
-}
 .time-widget {
   padding-top: 17px;
   padding-bottom: 18px;
@@ -486,30 +422,31 @@ body:has(dialog[open]) {
   color: var(--fg);
 }
 .work-media {
-  display: flex;
-  gap: 5px;
-  height: 126px;
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 9;
   overflow: hidden;
-  border-radius: 7px;
-  background: #e4e5e6;
+  border-radius: 8px;
+  background: #faf7ee;
+  transition: filter 0.25s;
 }
 .work-media img {
-  width: calc(50% - 2.5px);
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.4s;
-  filter: saturate(0.7);
-}
-.work-media:hover img {
-  transform: scale(1.04);
-}
-.work-media.single img {
   width: 100%;
-  object-fit: cover;
-  object-position: 50% 36%;
+  height: 100%;
+  object-fit: contain;
 }
-#work-worldsimprobe .work-media img {
-  object-position: center top;
+.work-media:hover {
+  filter: brightness(1.06);
+}
+/* Show one unaltered frame from the paper's 3-by-3 sequence.
+   Source 1304 x 767; top-middle photograph x442 y13, 421 x237. */
+.cift-cover img {
+  position: absolute;
+  width: 309.739%;
+  height: auto;
+  max-width: none;
+  left: -104.988%;
+  top: -5.485%;
 }
 .work-name {
   font-size: 12px;
@@ -1143,13 +1080,6 @@ body:has(.intro[open]) .command-dock {
   .widget {
     padding: 16px;
   }
-  .shortcut-grid {
-    gap: 8px;
-  }
-  .app-icon {
-    width: 52px;
-    height: 52px;
-  }
   .identity-widget {
     gap: 11px;
   }
@@ -1168,9 +1098,6 @@ body:has(.intro[open]) .command-dock {
   }
   .honor-preview small {
     font-size: 8px;
-  }
-  .work-media {
-    height: 110px;
   }
 }
 @media (max-width: 840px) {
@@ -1192,37 +1119,8 @@ body:has(.intro[open]) .command-dock {
   .desk-column {
     gap: 16px;
   }
-  .middle-column {
-    display: contents;
-  }
-  .identity-widget {
-    grid-row: 1;
-  }
-  .desk-column:first-child {
-    grid-row: 2;
-  }
-  .desk-column:last-child {
-    grid-row: 5;
-  }
-  .interests-widget {
-    grid-row: 3;
-  }
-  .question-widget {
-    grid-row: 4;
-  }
   .widget {
     padding: 20px;
-  }
-  .shortcut-grid {
-    padding: 4px 0 9px;
-    gap: 12px;
-  }
-  .app-icon {
-    width: clamp(46px, 15vw, 59px);
-    height: clamp(46px, 15vw, 59px);
-  }
-  .shortcut {
-    font-size: 11px;
   }
   .identity-widget .portrait {
     width: 65px;
@@ -1266,9 +1164,6 @@ body:has(.intro[open]) .command-dock {
   }
   .question-source {
     font-size: 10px;
-  }
-  .work-media {
-    height: 175px;
   }
   .work-tabs button {
     font-size: 12px;

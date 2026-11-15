@@ -16,3 +16,8 @@ Verified on November 15, 2026. This file is not included in the published websit
 The owner explicitly requested an English-only website. The public profile link is canonical and does not retain authentication or tracking parameters from the supplied URL.
 
 The introduction is shown once per browser session and remains available through the About controls and `/#about`; the legacy `/about/` URL redirects there. Introduction, honors, contact, and paper dialogs require JavaScript, as do search and selected-work tab switching. Direct public links on the desktop remain usable without JavaScript. All publication and honor metadata is rendered at build time; the three-award preview does not replace or remove any of the seven supplied honors.
+
+## Selected-work covers
+
+- WorldSimProbe: `assets/worldsimprobe-distributions.jpg` is the original [evaluation-gap visualization](https://evophys.com/WorldSimProbe/assets/images/evaluation-gap.jpg?v=2) from the project page. The cover displays the whole figure with its original colors.
+- CIFT: `assets/cift-cloth-folding.png` is the original [Figure 25 image](https://arxiv.org/html/2509.24797v1/fold_the_cloth_2.png) from the paper. CSS frames the top-middle photograph (x442, y13, width421, height237) of the real robot folding sequence. The underlying image is unmodified.
