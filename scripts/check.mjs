@@ -34,6 +34,23 @@ const redirectScript = await readFile(
   path.join(dist, "evophys-redirect.js"),
   "utf8",
 );
+const magicEntry = await readFile(path.join(dist, "magic-entry.js"), "utf8");
+for (const hash of ["#magic", "#honors", "#research", "#magic-other", ""]) {
+  let destination = null;
+  let hashListener;
+  const location = { hash, replace: (url) => { destination = url; } };
+  vm.runInNewContext(magicEntry, {
+    window: { location, addEventListener: (name, fn) => {
+      assert.equal(name, "hashchange");
+      hashListener = fn;
+    } },
+  });
+  assert.equal(destination, hash === "#magic" ? "/magic/" : null);
+  destination = null;
+  location.hash = "#magic";
+  hashListener();
+  assert.equal(destination, "/magic/");
+}
 for (const [pathname, search, hash, expected] of [
   [
     "/evophys/WorldSimProbe/",

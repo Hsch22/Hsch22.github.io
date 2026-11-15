@@ -41,6 +41,7 @@ Only explicitly selected directories enter `dist/`. Development scripts, deploym
 ## Existing URLs and cache migration
 
 - `/magic/` and its assets/service worker are copied byte-for-byte.
+- The previous `/#magic` navigation shortcut still opens `/magic/`. The calculator keeps its original portrait-only display and saved settings.
 - Known `/evophys/` pages and the custom 404 retain path/query/fragment-preserving browser redirects to **https://evophys.com/**. These are browser redirects, not HTTP 301/308 responses; embedded assets and API clients should use the official domain directly.
 - `/about/` points to the new profile section.
 - `/sw.js` retires the old root-scoped blog service worker and clears only its known caches. It does not remove the calculator's `calcdm:` caches or worker.

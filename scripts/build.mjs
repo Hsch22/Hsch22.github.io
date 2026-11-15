@@ -141,7 +141,7 @@ await rm(out, { recursive: true, force: true });
 await mkdir(out, { recursive: true });
 await writeFile(path.join(out, "index.html"), html);
 await Promise.all(
-  ["styles.css", "app.js", "evophys-redirect.js"].map((file) =>
+  ["styles.css", "app.js", "evophys-redirect.js", "magic-entry.js"].map((file) =>
     cp(path.join(root, "site", file), path.join(out, file)),
   ),
 );
