@@ -7,8 +7,8 @@
     <meta name="theme-color" data-theme="light" content="#f9f9f5" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" data-theme="dark" content="#1b211f" media="(prefers-color-scheme: dark)" />
     <script src="/theme.js"></script>
-    <title>专项数据，留多少才够？ — Sicheng Hu</title>
-    <meta name="description" content="从一次视频 world model 实验出发，用事件覆盖率、replay 和 gradient alignment 理解训练数据配比。" />
+    <title>专项数据留多少才够？ — Sicheng Hu</title>
+    <meta name="description" content="训练步数有限，专项数据该占多少？从一组视频 world model 实验谈起，看少量数据何时就能覆盖一种交互，又能保住多少原有能力。" />
     <link rel="canonical" href="https://hsch22.github.io/blog/zh/a-small-share/" />
     <link rel="alternate" hreflang="en" href="https://hsch22.github.io/blog/a-small-share/" />
     <link rel="alternate" hreflang="zh-CN" href="https://hsch22.github.io/blog/zh/a-small-share/" />
@@ -16,11 +16,11 @@
     <meta property="og:type" content="article" />
     <meta property="og:locale" content="zh_CN" />
     <meta property="og:locale:alternate" content="en_US" />
-    <meta property="og:title" content="专项数据，留多少才够？" />
-    <meta property="og:description" content="当小球重新从挡板后滚出来，模型还记得它吗？用一次遮挡理解训练数据配比。" />
+    <meta property="og:title" content="专项数据留多少才够？" />
+    <meta property="og:description" content="小球滚到挡板后面，模型还记得它吗？从一组视频实验说起，聊聊训练时这类交互视频占多少才够。" />
     <meta property="og:url" content="https://hsch22.github.io/blog/zh/a-small-share/" />
     <meta property="og:image" content="https://hsch22.github.io/blog/a-small-share/occlusion.webp" />
-    <meta property="og:image:alt" content="一颗红球沿着桌面滚过蓝色挡板，在另一侧重新露面。" />
+    <meta property="og:image:alt" content="一颗红球沿桌面滚到蓝色挡板后，又从另一侧露出来。" />
     <meta property="article:published_time" content="2026-11-20" />
     <link rel="icon" href="/assets/favicon.svg?v=sun" type="image/svg+xml" sizes="any" />
     <link rel="preload" href="/assets/newsreader.ttf" as="font" type="font/ttf" crossorigin />
@@ -28,7 +28,7 @@
     <link rel="stylesheet" href="/blog/reading.css?v=editions" />
     <script src="/blog/reading.js" defer></script>
     <script src="/blog/a-small-share/coverage.js?v=editions" defer></script>
-    <script src="/blog/comments.js?v=editions" defer></script>
+    <script src="/blog/comments.js?v=zh-copy" defer></script>
   </head>
   <body class="reading-page">
     <a class="skip-link" href="#article">跳到正文</a>
@@ -45,11 +45,10 @@
         <header class="essay-hero">
           <div class="hero-copy">
             <p class="dateline"><time datetime="2026-11-20">2026 年 11 月 20 日</time></p>
-            <h1><span class="phrase">专项数据，</span><span class="phrase">留多少才够？</span></h1>
+            <h1><span class="phrase">专项数据</span><span class="phrase">留多少才够？</span></h1>
             <div class="standfirst">
-              <p><span class="phrase">哪怕只用试过的最小配比，</span><span class="phrase">模型也更能记住被遮住的物体。</span></p>
-              <p><span class="phrase">继续加入同类视频，</span><span class="phrase">下一帧的预测误差还在下降。</span></p>
-              <p><span class="phrase">决定训练配比时，</span><span class="phrase">该看哪一个结果？</span></p>
+              <p><span class="phrase">物体被挡住以后，</span><span class="phrase">模型还记得它吗？</span></p>
+              <p><span class="phrase">我试了几种配比，</span><span class="phrase">少量交互视频就能帮上忙。</span><span class="phrase">再加一些，</span><span class="phrase">模型预测下一帧更准了，</span><span class="phrase">处理遮挡的表现却没怎么变。</span></p>
             </div>
             <p class="byline" lang="en">Sicheng Hu</p>
           </div>
@@ -62,32 +61,33 @@
           <aside class="contents">
             <nav aria-label="本文目录">
               <p>本文目录</p>
-              <a href="#comparison"><span class="phrase">预测更准，</span><span class="phrase">小球就能回来吗？</span></a>
-              <a href="#coverage">最早几段视频的价值</a>
-              <a href="#replay">给旧数据留一点位置</a>
-              <a href="#exchange">谁让出了这一步？</a>
-              <a href="#rollout">等到小球重新出现</a>
+              <a href="#comparison">小球消失的那几帧</a>
+              <a href="#coverage">多看一段视频有什么用？</a>
+              <a href="#replay">留 5% 给旧语料</a>
+              <a href="#exchange"><span class="phrase">专项数据多了，</span><span class="phrase">哪类数据少了？</span></a>
+              <a href="#rollout">把 rollout 拉长再看</a>
             </nav>
           </aside>
           <div class="essay-prose">
             <section id="comparison">
-              <h2><span class="phrase">预测更准，</span><span class="phrase">小球就能回来吗？</span></h2>
-              <p>把一颗红球滚到挡板后面。有那么几帧，模型只要画出一片空桌面，就算预测对了。我更想再看几帧。球从另一侧滚出来时，还是刚才那颗吗？</p>
-              <p>做视频 <span class="phrase" lang="en">world model</span> 实验时，这个区别改变了我看结果的方式。几次训练都从同一组权重出发，用掉的视频总时长也相同。</p>
-              <p>其中一组实验改变了物理交互视频的配比。只给它留出试过的最小份额，模型在 interaction 和 <span lang="en" class="phrase">object persistence</span> 上就超过了起始模型。后一个指标看的是物体暂时离开视野之后，模型还能不能把它接回来。再提高配比，模型对这个来源中新片段的 <span lang="en" class="phrase">one-step prediction error</span> 继续下降，两项 rollout 得分却几乎停在原处。</p>
+              <h2>小球消失的那几帧</h2>
+              <p>想象一颗红球滚到挡板后面。球被挡住的那几帧，桌面上本来就看不到它。模型哪怕已经把球忘了，也可能把这几帧画对。再往后看才有意思。等球该从另一侧露出来时，模型画的还是刚才那颗红球吗？</p>
+              <p>我在做视频 <span class="phrase" lang="en">world model</span> 实验时，比较过几种训练数据配比。每次都从同一组权重开始，训练用的视频总时长也一样。其中一组实验调整的是物理交互视频的占比。下文说的“专项数据”，指的就是这类视频。</p>
+              <p>在试过的最低占比下，让模型连续生成一段视频（<span lang="en">rollout</span>），它的 <span lang="en">interaction</span> 和 <span lang="en" class="phrase">object persistence</span> 得分都已经高于训练前。后一项看的是物体暂时离开视野后，模型能不能在后续画面里画出同一个物体。</p>
+              <p>进一步提高专项视频的占比，模型在同一来源的新片段上预测下一帧的误差（<span lang="en" class="phrase">one-step prediction error</span>）继续下降。两项 rollout 得分却几乎没变。</p>
               <figure class="comparison-figure">
                 <picture>
-                  <source media="(max-width: 520px)" srcset="/blog/zh/a-small-share/response-narrow.svg" width="640" height="455" />
-                  <img src="/blog/zh/a-small-share/response.svg" width="1200" height="504" loading="lazy" alt="专项数据从较小份额增至较大份额，单步预测误差继续下降，interaction 和 object persistence 得分基本持平。" />
+                  <source media="(max-width: 520px)" srcset="/blog/zh/a-small-share/response-narrow.svg?v=zh-copy" width="640" height="455" />
+                  <img src="/blog/zh/a-small-share/response.svg?v=zh-copy" width="1200" height="504" loading="lazy" alt="提高专项数据占比后，单步预测误差继续下降，interaction 和 object persistence 的得分变化很小。" />
                 </picture>
-                <figcaption>同一次配比调整，两个读数走势不同。重绘图只表示变化方向，线条的高度和跨度是示意。</figcaption>
+                <figcaption>专项数据占比提高后，单步预测误差继续下降，两项 rollout 得分基本持平。图中线条只表示变化趋势。</figcaption>
               </figure>
-              <p>我会先保留那个较小的份额。它已经提供了我关心的交互样例。要再给它加量，我希望能说出模型还有哪种交互做不好。熟悉的画面又预测准了一些，单凭这一点，我还舍不得把别处的训练预算挪过来。</p>
+              <p>如果主要关心模型在遮挡后的表现，我会先用这个较低的比例。要不要再加，得看多出来的那些视频能不能帮它学会一种原先做不好的交互。</p>
             </section>
             <section id="coverage">
-              <h2>最早几段视频的价值</h2>
-              <p>假设总共能放进 36 段视频。一部分选专项素材，其余留给普通场景。在这个例子里，只有专项素材会出现我们关心的两种情况。一颗球经过挡板，平均每 4 段能看到一次。两件物体都经过挡板，平均每 16 段才有一次。</p>
-              <p>给专项素材留 <var>s</var> 个位置。假设每次独立抽取，每段里出现某个事件的概率都是 <var>r</var>，那么一次都没抽到的概率是 <span class="inline-math">(1 − <var>r</var>)<sup><var>s</var></sup></span>。用 1 减去它，就是至少见过一次的概率。</p>
+              <h2><span class="phrase">多看一段视频</span><span class="phrase">有什么用？</span></h2>
+              <p>假设一批训练数据只能放 36 段视频，选一些专项视频，其余用普通场景填满。为了便于计算，假定下面两种遮挡只出现在专项视频里。一个物体经过挡板，平均每 4 段能看到一次。两个物体都经过挡板，平均每 16 段才有一次。</p>
+              <p>现在独立抽取 <var>s</var> 段专项视频。如果每段里出现某种交互的概率都是 <var>r</var>，那么连续 <var>s</var> 段都没遇到它的概率就是 <span class="inline-math">(1 − <var>r</var>)<sup><var>s</var></sup></span>。用 1 减去这个数，就得到至少见到一次这种交互的概率 <var>C</var>(<var>s</var>)。</p>
               <div class="equation">
                 <math
                   xmlns="http://www.w3.org/1998/Math/MathML"
@@ -106,46 +106,46 @@
                 >
               </div>
               <figure class="coverage-demo" id="coverage-demo" aria-labelledby="coverage-heading">
-                <h3 id="coverage-heading">给专项视频留几段？</h3>
+                <h3 id="coverage-heading">36 段视频，怎么分？</h3>
                 <p class="demo-budget">
                   <strong id="specialist-count">8 段专项视频</strong><span aria-hidden="true"> / </span><span id="broad-count">28 段普通视频</span>
                 </p>
                 <div class="slider-control" hidden>
-                  <label for="clip-count">36 段视频中，专项视频占几段？</label>
+                  <label for="clip-count">专项视频的段数</label>
                   <input id="clip-count" type="range" min="0" max="36" value="8" step="1" />
                 </div>
                 <div class="probability-row">
-                  <span>一件物体经过挡板</span><strong id="common-value">90.0%</strong>
-                  <meter id="common-meter" min="0" max="1" value="0.899887" aria-label="至少见到一次单物体经过挡板的概率"></meter>
+                  <span>一个物体经过挡板</span><strong id="common-value">90.0%</strong>
+                  <meter id="common-meter" min="0" max="1" value="0.899887" aria-label="至少有一段视频拍到一个物体经过挡板的概率"></meter>
                 </div>
                 <div class="probability-row rare">
-                  <span>两件物体经过挡板</span><strong id="rare-value">40.3%</strong>
-                  <meter id="rare-meter" min="0" max="1" value="0.403281" aria-label="至少见到一次双物体经过挡板的概率"></meter>
+                  <span>两个物体经过挡板</span><strong id="rare-value">40.3%</strong>
+                  <meter id="rare-meter" min="0" max="1" value="0.403281" aria-label="至少有一段视频拍到两个物体经过挡板的概率"></meter>
                 </div>
-                <figcaption>每条色带表示在整批视频里至少见到一次该事件的概率。两种事件的频率是为这个例子设定的。</figcaption>
+                <figcaption>横条表示在这 36 段视频里至少见到一次相应交互的概率，按上面假定的频率计算。</figcaption>
               </figure>
-              <p>取 8 段专项视频，见到常见事件的概率已经约为九成。再加一段，这个概率只提高约 2.5 个百分点。对较少见的双物体事件，同一段预算却能多带来约 3.7 个百分点。至于模型抓没抓住这次学习机会，还得去看 rollout 里发生了什么。</p>
-              <p>这也影响我下一次想收什么。把一段熟悉的视频再放一遍，模型就能用它再更新一次。补拍一段数据池里从未有过的交互，才给了模型第一次见到它的机会。所以我看训练日志时，会同时看有多少段不同的录像，以及它们实际占了多少次更新。</p>
+              <p>选 8 段专项视频，至少见到一次单个物体经过挡板的概率已经接近九成。从 8 段加到 9 段，这个概率只提高约 2.5 个百分点。对更少见的双物体遮挡，同样多加一段，概率能提高约 3.7 个百分点。这里算的是模型有多大机会见到例子。究竟学会了没有，还得看它能不能在 rollout 里重现这段交互。</p>
+              <p>这也影响我怎么收下一批数据。把同一段录像再放一遍，模型可以多练一次已经见过的动作。要让它第一次见到另一种交互，就得补充原先没有的录像。所以看训练日志时，我既看每类数据有多少段不同的录像，也看有多少次参数更新用到了这类数据。</p>
             </section>
             <section id="replay">
-              <h2>给旧数据留一点位置</h2>
-              <p>少量数据也可以用来维持已经学会的能力。Ibrahim 等人拿一个在 The Pile 上训练过的 100 亿参数语言模型，换到 SlimPajama 上继续训练。两次实验用了同样多的 token，其中一次把每 100 个 token 里的 5 个留给了旧数据，做 replay。 <a class="source" href="https://openreview.net/pdf?id=DimPeeCxKO">Ibrahim et al.，表 4</a></p>
+              <h2>留 5% 给旧语料</h2>
+              <p>换一批语料继续训练时，掺一点旧语料，还能帮模型保住原先的能力。Ibrahim 等人让一个在 The Pile 上训练过的 100 亿参数语言模型改用 SlimPajama 继续训练。两组实验用的 token 总数相同。一组全部取自新语料，另一组每 100 个 token 里有 5 个来自旧语料，这就是这次实验里的 replay。 <a class="source" href="https://openreview.net/pdf?id=DimPeeCxKO">Ibrahim 等，表 4</a></p>
               <table class="replay-table">
-                <caption>公开 replay 实验结束时的 <span class="phrase" lang="en">validation loss</span></caption>
-                <thead><tr><th scope="col">旧数据占比</th><th scope="col">旧数据</th><th scope="col">新数据</th></tr></thead>
+                <caption>继续训练后，模型在新旧语料上的 <span class="phrase" lang="en">validation loss</span></caption>
+                <thead><tr><th scope="col">旧语料占比</th><th scope="col">旧语料</th><th scope="col">新语料</th></tr></thead>
                 <tbody>
                   <tr><th scope="row">0%</th><td>1.98</td><td>2.00</td></tr>
                   <tr><th scope="row">5%</th><td>1.79</td><td>2.00</td></tr>
                 </tbody>
               </table>
-              <p>切换数据前，模型在旧数据上的 loss 是 1.75。完全换成新数据后，它升到 1.98。只拿 5% 做 replay，就把它拉回 1.79，挽回了这次上升的大约五分之四。新数据上的 loss 按论文报告的精度，两次都是 2.00。先想清楚旧能力要保住多少，“够用”就有了可以对照的数字。</p>
-              <p>Ye 等人把这个想法用在配比选择上。他们以不同数据的采样权重为输入，拟合各自的 <span class="phrase" lang="en">validation loss</span>。给语言模型加入 Python 代码继续训练时，他们想知道，要让模型在原有文本上的 loss 维持原水平，该给文本留多少份额？拟合好的曲线就能给出估计。先定想保住的表现，曲线上才有了要找的那个点。 <a class="source" href="https://proceedings.iclr.cc/paper_files/paper/2025/file/cc84bfabe6389d8883fc2071c848f62a-Paper-Conference.pdf">Ye et al.，图 10</a></p>
+              <p>切换语料前，模型在旧语料上的 loss 是 1.75。完全改用新语料，这个值就升到 1.98。混入 5% 的旧语料，则只升到 1.79。原本 0.23 的增幅缩小到了 0.04，少了约八成。按论文给出的两位小数，两组在新语料上的 loss 都是 2.00。</p>
+              <p>Ye 等人在语言模型的训练语料里加了 Python 代码。他们希望模型接着学代码时，在原有文本上的 loss 还能维持原来的水平。那就得知道，新一轮训练里要保留多少原有文本。他们用不同配比做实验，拟合出各类数据的 <span class="phrase" lang="en">validation loss</span> 随采样权重变化的曲线，再从曲线上估算需要的文本占比。 <a class="source" href="https://proceedings.iclr.cc/paper_files/paper/2025/file/cc84bfabe6389d8883fc2071c848f62a-Paper-Conference.pdf">Ye 等，图 10</a></p>
             </section>
             <section id="exchange">
-              <h2>谁让出了这一步？</h2>
-              <p>谈配比要先讲清单位。假设一个长视频 batch 放得下 2 段，一个短视频 batch 放得下 6 段。两种 batch 轮流训练，长视频分到一半的 <span class="phrase" lang="en">optimizer update</span>，按片段数算却只占四分之一。数硬盘上的文件，还会得到另一个比例。如果每次更新只抽一个数据来源，我会直接数每个来源实际拿到了几次更新。</p>
-              <p>看一次很小的 <span class="phrase" lang="en">gradient step</span>。用 <var>g</var><sub>S</sub> 表示专项数据的平均梯度，<var>g</var><sub>B</sub> 表示要让出份额的通用数据的平均梯度，再用 <var>g</var><sub>T</sub> 表示目标 loss 的梯度。</p>
-              <p>从通用数据的采样概率里挪出 <var>δ</var> 给专项数据。和原配比下的这一步更新相比，目标 loss 的变化可以用一阶近似来写。</p>
+              <h2><span class="phrase">专项数据多了，</span><span class="phrase">哪类数据少了？</span></h2>
+              <p>说长视频“占一半”，得看按什么算。假设一个 batch 能放 2 段长视频，换成短视频就能放 6 段。两种 batch 交替训练，每两次 <span class="phrase" lang="en">optimizer update</span> 就有一次用了长视频。可按视频段数算，8 段里只有 2 段是长的，只占四分之一。硬盘上有多少个文件，又是另一回事。如果训练时每一步只从一个来源采样，我会直接数各类数据分别用了多少步。</p>
+              <p>可以用一次很小的 <span class="phrase" lang="en">gradient step</span> 来看这个取舍。记专项数据和通用数据的平均梯度分别为 <var>g</var><sub>S</sub> 和 <var>g</var><sub>B</sub>，目标 loss 的梯度为 <var>g</var><sub>T</sub>。</p>
+              <p>现在把专项数据的采样概率提高 <var>δ</var>，通用数据的采样概率相应减少 <var>δ</var>。用相同的学习率 <var>η</var>，按新旧配比各更新一步，目标 loss 会相差多少？下面是一阶近似，差值按新配比减原配比来算。</p>
               <div class="equation">
                 <math
                   xmlns="http://www.w3.org/1998/Math/MathML"
@@ -161,15 +161,15 @@
                   ></math
                 >
               </div>
-              <p>其中 <var>η</var> 是学习率。内积衡量的是，每种更新有多少分量沿着能降低目标 loss 的方向。一次专项更新本身可能有用，但如果被换走的那次更新更有用，这笔交换仍然不划算。Fan 等人在 DoGE 里用 <span lang="en" class="phrase">gradient alignment</span> 学习各来源的采样权重。上式里两个梯度相减，把让出这一步的代价也算了进来。 <a class="source" href="https://proceedings.mlr.press/v235/fan24e.html">Fan et al.，第 2 节</a></p>
-              <p>在视频实验里，有些真实场景的数据也让模型更容易预测其他真实场景。专项交互视频在这些场景上表现出的 transfer 较少。从通用数据里挪走一步，连第三个来源都可能受影响，尽管它自己的采样比例根本没动。</p>
+              <p>内积为正，意味着同样更新一步，新配比下的目标 loss 预计更低。即便专项数据本身有用，也得看换掉的那类数据原本能帮多大忙。Fan 等人在 DoGE 中就用 <span lang="en" class="phrase">gradient alignment</span> 来学习各类数据的采样权重。 <a class="source" href="https://proceedings.mlr.press/v235/fan24e.html">Fan 等，第 2 节</a></p>
+              <p>在视频实验里，有些真实场景的录像还能帮模型预测别的真实场景。专项交互视频在这些场景上的迁移效果（<span lang="en">transfer</span>）就弱一些。因此，即使第三类数据的占比没动，前两类的比例一变，模型在第三类上的表现也可能跟着变。</p>
             </section>
             <section id="rollout">
-              <h2>等到小球重新出现</h2>
-              <p>另一组配比实验里，<span class="phrase" lang="en">one-step error</span> 几乎看不出差别，短时的 <span class="phrase" lang="en">memory probe</span> 也相差无几。到了更长的 rollout 上，差距才显出来。模型得在许多帧之后，还记得先前发生过什么。</p>
-              <p>模型一旦生成了错误的状态，下一步预测就会以这个状态为输入。Talvitie 给过一个具体例子，两个模型可以有同样的 <span class="phrase" lang="en">one-step error</span>，向前推演时却走出不同的轨迹。 <a class="source" href="https://arxiv.org/abs/1612.06018">Talvitie，第 2.1 节</a></p>
-              <p>下次做这种对比，我会让两次训练从同一组权重出发，固定更新步数，写清楚哪个来源让出了份额。然后在同一组短、长 rollout 上分别打分，再把原配比重跑一次，看看它本来会波动多少。</p>
-              <p>我会先看目标行为能不能稳定达标，再看让出份额的那类数据原先维持的能力还在不在。两项都满足的配比里，我选试过的最小份额。如果两种配比都能让小球短暂消失后重新出现，我就留下较小的那一份。省下来的训练步数，可以花在遮挡更久、小球还回不来的地方。</p>
+              <h2>把 <span lang="en">rollout</span> 拉长再看</h2>
+              <p>在另一组实验里，两种配比的 <span class="phrase" lang="en">one-step error</span> 很接近，用短序列做 <span class="phrase" lang="en">memory probe</span> 也看不出多少差别。差距是在更长的 rollout 里显出来的。那时，模型得记住许多帧之前发生的事。</p>
+              <p>模型会把自己刚生成的状态当作下一步的输入。中间有一步出了错，后面的预测就得从这个错误状态继续。Talvitie 举过一个例子，两个模型的 <span class="phrase" lang="en">one-step error</span> 相同，让它们连续推演，得到的轨迹却可能不同。 <a class="source" href="https://arxiv.org/abs/1612.06018">Talvitie，第 2.1 节</a></p>
+              <p>下次比较配比，我会让两组从相同的权重开始，固定训练步数，记下增加专项数据时减少了哪类数据。评估时，两组都跑同样的短 rollout 和长 rollout。我还会把原配比再跑一遍，看看光是重跑，分数就会波动多少。</p>
+              <p>回到开头那颗红球。如果试过的几种配比都能让它在短暂遮挡后稳定地从另一侧出现，我还会看看模型在通用场景里的表现。少用一些通用数据以后，这些场景里也没有退步，我就选专项数据占比最低的那种。省下的训练步数，可以留给那些遮挡一久、模型就把球弄丢的片段。</p>
             </section>
           </div>
         </div>
@@ -177,9 +177,9 @@
       <section id="comments" class="comments-panel" aria-labelledby="comments-heading" data-issue="7">
         <div class="comments-head">
           <h2 id="comments-heading">评论</h2>
-          <a class="comment-action" href="https://github.com/Hsch22/Hsch22.github.io/issues/7#new_comment_field">去 GitHub 留言</a>
+          <a class="comment-action" href="https://github.com/Hsch22/Hsch22.github.io/issues/7#new_comment_field">在 GitHub 上留言</a>
         </div>
-        <p id="comment-status" class="comment-status" role="status">可以在 <a href="https://github.com/Hsch22/Hsch22.github.io/issues/7">GitHub 评论区</a>阅读或留言。</p>
+        <p id="comment-status" class="comment-status" role="status">也可以到 <a href="https://github.com/Hsch22/Hsch22.github.io/issues/7">GitHub 讨论区</a>查看评论或留言。</p>
         <ol id="comment-list"></ol>
         <button type="button" id="more-comments" hidden>加载更多评论</button>
       </section>
