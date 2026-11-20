@@ -14,8 +14,8 @@ const messages = {
   },
   "zh-CN": {
     deleted: "已注销的账号", loading: "正在加载评论…", more: "加载更多评论",
-    empty: "还没有评论，来留第一条吧。", retry: "重试",
-    error: "暂时无法加载评论，你可以前往 GitHub 查看。",
+    empty: "还没有人留言。", retry: "重试",
+    error: "评论暂时加载不出来，可以到 GitHub 查看。",
   },
 }[locale];
 const shown = new Set();

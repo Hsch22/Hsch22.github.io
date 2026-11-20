@@ -717,5 +717,5 @@ z
    <rect x="0" y="0" width="384" height="273"/>
   </clipPath>
  </defs>
-<g lang="zh-CN" fill="var(--muted)" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="15.60" text-anchor="middle" dominant-baseline="central"><text x="207.00" y="29.89">较小配比</text><text x="319.20" y="29.89">较大配比</text></g>
+<g lang="zh-CN" fill="var(--muted)" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="15.60" text-anchor="middle" dominant-baseline="central"><text x="207.00" y="29.89">占比较低</text><text x="319.20" y="29.89">占比较高</text></g>
 </svg>
