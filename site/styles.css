@@ -368,31 +368,6 @@ body:has(dialog[open]) {
   color: var(--quiet);
   margin-left: auto;
 }
-.question-widget {
-  padding-top: 19px;
-  padding-bottom: 21px;
-  background: linear-gradient(135deg, #43496010, #7151650c), var(--surface);
-}
-.question-widget .widget-heading {
-  margin-bottom: 18px;
-}
-.question-widget .widget-heading h2 {
-  font-size: 10px;
-}
-.question-widget > p {
-  font: 400 25px/1.22 var(--serif);
-  letter-spacing: -0.3px;
-  color: #d9dbe4;
-}
-.question-source {
-  display: block;
-  font: 9px/1.6 var(--mono);
-  color: var(--quiet);
-  margin-top: 18px;
-}
-.question-source span {
-  float: right;
-}
 .work-widget {
   padding-bottom: 18px;
 }
@@ -482,19 +457,12 @@ body:has(dialog[open]) {
   white-space: nowrap;
 }
 .all-honors {
-  display: flex;
-  justify-content: space-between;
+  display: block;
   width: 100%;
+  text-align: start;
   font-size: 10px;
   color: var(--muted);
   padding-top: 15px;
-}
-.all-honors span {
-  font: 9px var(--mono);
-  color: var(--quiet);
-  background: #ffffff07;
-  border-radius: 3px;
-  padding: 1px 5px;
 }
 .desktop-footer {
   display: flex;
@@ -1030,9 +998,6 @@ body:has(.intro[open]) .command-dock {
 [data-theme="light"] .identity-mark {
   color: var(--fg);
 }
-[data-theme="light"] .question-widget > p {
-  color: var(--fg);
-}
 [data-theme="light"] .interest-glyph {
   color: var(--muted);
 }
@@ -1209,15 +1174,6 @@ body:has(.intro[open]) .command-dock {
   }
   .row-note {
     display: block;
-    font-size: 10px;
-  }
-  .question-widget > p {
-    font-size: 29px;
-  }
-  .question-widget .widget-heading h2 {
-    font-size: 11px;
-  }
-  .question-source {
     font-size: 10px;
   }
   .work-tabs button {
