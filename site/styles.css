@@ -860,24 +860,40 @@ pre {
   align-items: start;
   gap: clamp(8px, 1.1vw, 16px);
 }
+:is(.intro-prints, .desktop-album, .photo-link, .viewer-stage) img {
+  --paper-edge: clamp(7px, 0.85vw, 11px);
+  border: var(--paper-edge) solid transparent;
+  border-width: var(--paper-edge) calc(var(--paper-edge) * 0.94)
+    calc(var(--paper-edge) * 1.32) calc(var(--paper-edge) * 1.08);
+  border-image: url("/assets/pencil-print.svg") 18 / 1 stretch;
+  filter: drop-shadow(0 2px 2px light-dark(#39302624, #090b084d));
+}
+.intro-prints img + img,
+.desktop-album img,
+.photo-link:nth-child(even) img,
+.viewer-stage img {
+  border-image-source: url("/assets/pencil-print.svg#corners");
+}
 .intro-prints img {
   width: 100%;
   height: auto;
-  box-shadow: 0 10px 24px #07080c38;
+  --paper-edge: clamp(5px, 0.65vw, 8px);
 }
 .intro-prints img:first-child {
   margin-top: clamp(24px, 4vw, 56px);
+  rotate: -1.15deg;
+}
+.intro-prints img + img {
+  rotate: 0.85deg;
 }
 .desktop-album {
   display: block;
-  overflow: hidden;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 15px;
 }
 .desktop-album img {
+  --paper-edge: 6px;
   width: 100%;
   height: auto;
+  rotate: -0.55deg;
 }
 @keyframes photo-arrive {
   from {
