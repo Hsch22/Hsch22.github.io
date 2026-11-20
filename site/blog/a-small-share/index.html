@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f9f9f5" />
+    <title>When a small share is enough — Sicheng Hu</title>
+    <meta
+      name="description"
+      content="How much specialist data earns a place in a training mix? An illustrated essay on coverage, replay, and what the next training step buys."
+    />
+    <link rel="canonical" href="https://hsch22.github.io/blog/a-small-share/" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="When a small share is enough" />
+    <meta
+      property="og:description"
+      content="A world-model experiment, a replay result, and a way to decide where the next training step belongs."
+    />
+    <meta
+      property="og:url"
+      content="https://hsch22.github.io/blog/a-small-share/"
+    />
+    <meta
+      property="og:image"
+      content="https://hsch22.github.io/blog/a-small-share/occlusion.webp"
+    />
+    <meta
+      property="og:image:alt"
+      content="A vermilion ball rolls behind a folded blue screen and emerges on the other side."
+    />
+    <meta property="article:published_time" content="2026-11-20" />
+    <link
+      rel="icon"
+      href="/assets/favicon.svg?v=sun"
+      type="image/svg+xml"
+      sizes="any"
+    />
+    <link
+      rel="preload"
+      href="/assets/newsreader.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin
+    />
+    <link rel="stylesheet" href="/styles.css?v=writing" />
+    <link rel="stylesheet" href="/blog/reading.css?v=1" />
+    <script src="/blog/a-small-share/coverage.js" defer></script>
+    <script src="/blog/comments.js" defer></script>
+  </head>
+  <body class="reading-page">
+    <a class="skip-link" href="#article">Skip to the article</a>
+    <header class="reading-nav">
+      <a class="wordmark" href="/"
+        ><img
+          src="/assets/favicon.svg?v=sun"
+          alt=""
+          width="24"
+          height="24"
+        />Sicheng Hu</a
+      >
+      <nav aria-label="Blog navigation">
+        <a href="/blog/">Blog</a><a href="#comments">Comments</a>
+      </nav>
+    </header>
+    <main id="article">
+      <article>
+        <header class="essay-hero">
+          <div class="hero-copy">
+            <p class="dateline">
+              <time datetime="2026-11-20">November 20, 2026</time>
+            </p>
+            <h1>When a small share is enough</h1>
+            <p class="standfirst">
+              The smallest share we tried already improved object persistence.
+              More footage kept lowering prediction error. Which result should
+              decide the training mix?
+            </p>
+            <p class="byline">Sicheng Hu</p>
+          </div>
+          <img
+            class="cover-plate"
+            src="/blog/a-small-share/occlusion.webp"
+            width="1500"
+            height="1000"
+            fetchpriority="high"
+            alt="Successive positions of a vermilion ball rolling behind a folded blue screen and emerging on the other side."
+          />
+        </header>
+        <div class="essay-layout">
+          <aside class="contents">
+            <nav aria-label="In this essay">
+              <p>In this essay</p>
+              <a href="#comparison">Two ways to improve</a>
+              <a href="#coverage">The first few clips</a>
+              <a href="#replay">A little rehearsal</a>
+              <a href="#exchange">Who gives up a step?</a>
+              <a href="#rollout">Watch the ball come back</a>
+            </nav>
+          </aside>
+          <div class="essay-prose">
+            <section id="comparison">
+              <h2>Two ways to improve</h2>
+              <p>
+                Roll a red ball behind a screen. For a moment, the right
+                prediction is an empty stretch of tabletop. The interesting
+                frame comes later. Does the same ball come out on the other
+                side?
+              </p>
+              <p>
+                That distinction changed how I read a set of video-model
+                experiments. The runs began from the same weights and had the
+                same budget of training footage. In one comparison, the smallest
+                tested allotment of a source rich in physical interactions
+                already improved interaction and object persistence over the
+                starting model. A larger allotment drove down the error on fresh
+                clips from that source. The two rollout scores barely moved
+                beyond their earlier gains.
+              </p>
+              <figure class="comparison-figure">
+                <picture>
+                  <source
+                    media="(max-width: 520px)"
+                    srcset="/blog/a-small-share/response-narrow.webp"
+                    width="640"
+                    height="455"
+                  />
+                  <img
+                    src="/blog/a-small-share/response.webp"
+                    width="1200"
+                    height="504"
+                    loading="lazy"
+                    alt="Across the smaller and larger tested shares, one-step error falls while interaction and object-persistence scores stay approximately level."
+                  />
+                </picture>
+                <figcaption>
+                  Two readouts from the same change in mixture. This qualitative
+                  redraw shows the directions observed in the video comparison.
+                  Heights and distances are illustrative.
+                </figcaption>
+              </figure>
+              <p>
+                I would keep a small allocation for that source. It supplies
+                examples of the behavior I care about. To give it more, I would
+                want a new reason, such as a harder interaction the model still
+                gets wrong. Better predictions of familiar footage answer a
+                different question.
+              </p>
+            </section>
+            <section id="coverage">
+              <h2>The first few clips</h2>
+              <p>
+                Imagine a budget of 36 clips. You can fill some slots with
+                specialist footage and the rest with ordinary scenes. In this
+                toy example, only specialist clips contain the events of
+                interest. A simple crossing appears in one out of four
+                specialist clips on average. A harder crossing involving two
+                objects appears in one out of sixteen.
+              </p>
+              <p>
+                Give the specialist <var>s</var> slots. If each independent draw
+                contains a particular event with probability <var>r</var>, the
+                chance of missing it every time is
+                <span class="inline-math"
+                  >(1 − <var>r</var>)<sup><var>s</var></sup></span
+                >. Its chance of showing up at least once is therefore
+              </p>
+              <div class="equation">
+                <math
+                  xmlns="http://www.w3.org/1998/Math/MathML"
+                  display="block"
+                  aria-label="C of s equals one minus the quantity one minus r raised to s"
+                  ><mrow
+                    ><mi>C</mi><mo>(</mo><mi>s</mi><mo>)</mo><mo>=</mo><mn>1</mn
+                    ><mo>−</mo
+                    ><msup
+                      ><mrow
+                        ><mo>(</mo><mn>1</mn><mo>−</mo><mi>r</mi
+                        ><mo>)</mo></mrow
+                      ><mi>s</mi></msup
+                    ></mrow
+                  ></math
+                >
+              </div>
+              <figure
+                class="coverage-demo"
+                id="coverage-demo"
+                aria-labelledby="coverage-heading"
+              >
+                <h3 id="coverage-heading">Give the specialist a share</h3>
+                <p class="demo-budget">
+                  <strong id="specialist-count">8 specialist clips</strong
+                  ><span aria-hidden="true"> / </span
+                  ><span id="broad-count">28 ordinary clips</span>
+                </p>
+                <div class="slider-control" hidden>
+                  <label for="clip-count">Specialist clips out of 36</label>
+                  <input
+                    id="clip-count"
+                    type="range"
+                    min="0"
+                    max="36"
+                    value="8"
+                    step="1"
+                  />
+                </div>
+                <div class="probability-row">
+                  <span>Simple crossing</span
+                  ><strong id="common-value">90.0%</strong
+                  ><meter
+                    id="common-meter"
+                    min="0"
+                    max="1"
+                    value="0.899887"
+                    aria-label="Simple crossing encounter probability"
+                  ></meter>
+                </div>
+                <div class="probability-row rare">
+                  <span>Two-object crossing</span
+                  ><strong id="rare-value">40.3%</strong
+                  ><meter
+                    id="rare-meter"
+                    min="0"
+                    max="1"
+                    value="0.403281"
+                    aria-label="Two-object crossing encounter probability"
+                  ></meter>
+                </div>
+                <figcaption>
+                  Each bar gives the chance of seeing that event at least once
+                  in the whole budget. The frequencies here belong to the toy
+                  example.
+                </figcaption>
+              </figure>
+              <p>
+                With eight specialist clips, the common event already has about
+                a nine-in-ten chance of appearing. The next clip raises that
+                chance by only 2.5 percentage points. For the rarer event it
+                adds about 3.7 points. The very same clip slot has different
+                value for two behaviors. These are chances to learn. Whether the
+                model makes use of them is something we can check in a rollout.
+              </p>
+              <p>
+                This also changes what I would collect. Replaying a familiar
+                clip gives the model another update on it. Adding a recording of
+                an encounter missing from the pool gives the model its first
+                chance to see it. In a run log, I want to see both the number of
+                distinct recordings and the fraction of updates they receive.
+              </p>
+            </section>
+            <section id="replay">
+              <h2>A little rehearsal</h2>
+              <p>
+                A small share can also serve a skill the model already has.
+                Ibrahim and colleagues took a language model with 10 billion
+                parameters, trained on the Pile, and continued training it on
+                SlimPajama. They spent the same number of tokens in two runs. In
+                one, five tokens out of every hundred came from the old source.
+                <a
+                  class="source"
+                  href="https://openreview.net/pdf?id=DimPeeCxKO"
+                  >Ibrahim et al., Table 4</a
+                >
+              </p>
+              <table class="replay-table">
+                <caption>
+                  Final validation loss in the public replay experiment
+                </caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Old-source share</th>
+                    <th scope="col">Old source</th>
+                    <th scope="col">New source</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">0%</th>
+                    <td>1.98</td>
+                    <td>2.00</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">5%</th>
+                    <td>1.79</td>
+                    <td>2.00</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p>
+                The old-source loss had been 1.75 before the switch. A small
+                amount of rehearsal recovered about four fifths of the rise from
+                1.75 to 1.98, while new-source loss was the same at the reported
+                precision. That gives “enough” a concrete meaning once you
+                specify how much of the old performance you want to retain.
+              </p>
+              <p>
+                Ye and colleagues turned that reasoning into an experiment. They
+                fitted validation loss as a function of mixture weights. When
+                continuing a language model on Python code and its original text
+                distribution, they used the fitted curves to predict the share
+                that would maintain the original text loss. The retention target
+                gave them a way to choose a point on the curve.
+                <a
+                  class="source"
+                  href="https://proceedings.iclr.cc/paper_files/paper/2025/file/cc84bfabe6389d8883fc2071c848f62a-Paper-Conference.pdf"
+                  >Ye et al., Fig. 10</a
+                >
+              </p>
+            </section>
+            <section id="exchange">
+              <h2>Who gives up a step?</h2>
+              <p>
+                A ratio needs a unit. Suppose a long-video batch fits two clips
+                and a short-video batch fits six. If batches alternate, the long
+                videos get half the optimizer updates and a quarter of the
+                clips. An inventory of files gives a third number. For a trainer
+                that draws one source per update, I count how many updates each
+                source actually got.
+              </p>
+              <p>
+                Now take one small gradient step. Write <var>g</var
+                ><sub>S</sub> for the mean gradient from specialist data,
+                <var>g</var><sub>B</sub> for the broad data that would give up
+                some of its share, and <var>g</var><sub>T</sub> for the gradient
+                of a target loss. Move a fraction <var>δ</var> of the sampling
+                probability from broad to specialist. To first order, the change
+                in target loss relative to the original update is
+              </p>
+              <div class="equation">
+                <math
+                  xmlns="http://www.w3.org/1998/Math/MathML"
+                  display="block"
+                  aria-label="Delta L sub T is approximately negative eta times delta times the inner product of g sub T and the difference g sub S minus g sub B"
+                  ><mrow
+                    ><mi>Δ</mi><msub><mi>L</mi><mi>T</mi></msub
+                    ><mo>≈</mo><mo>−</mo><mi>η</mi><mi>δ</mi><mo>⟨</mo
+                    ><msub><mi>g</mi><mi>T</mi></msub
+                    ><mo>,</mo><msub><mi>g</mi><mi>S</mi></msub
+                    ><mo>−</mo><msub><mi>g</mi><mi>B</mi></msub
+                    ><mo>⟩</mo></mrow
+                  ></math
+                >
+              </div>
+              <p>
+                Here <var>η</var> is the learning rate. The inner product asks
+                how much of each update points in a direction that reduces the
+                target loss. Even a helpful specialist update can be a poor
+                trade if the displaced update would have helped more. Fan and
+                colleagues use gradient alignment with target domains to learn
+                sampling weights in DoGE. The subtraction above makes the cost
+                of a particular swap explicit.
+                <a
+                  class="source"
+                  href="https://proceedings.mlr.press/v235/fan24e.html"
+                  >Fan et al., §2</a
+                >
+              </p>
+              <p>
+                In the video runs, some collections of real scenes also made
+                other real scenes easier to predict. The specialist interaction
+                footage showed little of that transfer to those collections.
+                Taking a step away from a broadly useful source can therefore
+                cost something on a third source whose own share never changed.
+              </p>
+            </section>
+            <section id="rollout">
+              <h2>Watch the ball come back</h2>
+              <p>
+                In another video comparison, single-step error barely separated
+                two mixtures. Short memory probes also looked much the same. The
+                difference showed up when the model had to carry information
+                across longer sequences. Once it generates the wrong state, that
+                state becomes the input for its next prediction. Talvitie gives
+                a precise example of how two models with the same one-step
+                errors can behave differently when run forward.
+                <a class="source" href="https://arxiv.org/abs/1612.06018"
+                  >Talvitie, §2.1</a
+                >
+              </p>
+              <p>
+                My next comparison would start both runs from the same weights,
+                keep the step budget fixed, and name the source giving up
+                updates. I’d score the same short and long rollouts in both runs
+                and repeat the current mixture to see how much its scores
+                normally move.
+              </p>
+              <p>
+                My choice is the smallest tested share that reliably meets the
+                target while the behaviors served by the displaced data still
+                hold up. If both shares bring the ball back after a short
+                crossing, I keep the smaller one. I can spend the remaining
+                steps on the longer crossing where it still disappears.
+              </p>
+            </section>
+          </div>
+        </div>
+      </article>
+      <section
+        id="comments"
+        class="comments-panel"
+        aria-labelledby="comments-heading"
+        data-issue="7"
+      >
+        <div class="comments-head">
+          <h2 id="comments-heading">Comments</h2>
+          <a
+            class="comment-action"
+            href="https://github.com/Hsch22/Hsch22.github.io/issues/7#new_comment_field"
+            >Comment on GitHub</a
+          >
+        </div>
+        <p id="comment-status" class="comment-status" role="status">
+          Read or leave a comment in the
+          <a href="https://github.com/Hsch22/Hsch22.github.io/issues/7"
+            >discussion on GitHub</a
+          >.
+        </p>
+        <ol id="comment-list"></ol>
+        <button type="button" id="more-comments" hidden>
+          Load more comments
+        </button>
+      </section>
+    </main>
+    <footer class="reading-footer">
+      <a href="/blog/">All writing</a><a href="/">Sicheng Hu</a>
+    </footer>
+  </body>
+</html>

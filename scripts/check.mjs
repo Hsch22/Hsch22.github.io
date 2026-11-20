@@ -8,6 +8,8 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 const dist = path.join(root, "dist");
 const html = await readFile(path.join(dist, "index.html"), "utf8");
 const album = await readFile(path.join(dist, "photos/index.html"), "utf8");
+const blog = await readFile(path.join(dist, "blog/index.html"), "utf8");
+const essay = await readFile(path.join(dist, "blog/a-small-share/index.html"), "utf8");
 assert(
   !/Huang Xuan|huangxuan\.me|avatar-hux|huxpro@gmail/.test(html),
   "Inherited identity leaked into homepage",
@@ -19,7 +21,7 @@ assert(photoCount > 0, "The camera roll must contain photographs");
 assert.equal((album.match(/href="[^"]+\/large\.webp"/g) || []).length, photoCount);
 assert(!album.includes("<figcaption"), "The camera roll should show only photographs");
 let checked = 0;
-for (const [name, page] of [["homepage", html], ["camera roll", album]]) {
+for (const [name, page] of [["homepage", html], ["camera roll", album], ["blog", blog], ["essay", essay]]) {
   assert(!/\{\{[A-Z_]+\}\}/.test(page), `Unresolved template tokens in ${name}`);
   assert(!/[\u3400-\u9fff]/u.test(page), `The ${name} must be entirely English`);
   const ids = [...page.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]);

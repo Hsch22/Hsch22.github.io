@@ -2,7 +2,7 @@
 
 Personal research homepage at **https://hsch22.github.io/**.
 
-An English-only personal desktop with a photo album, a full-screen introduction, publications, research interests, scholarships and grants, and selected work. Built with semantic HTML, CSS, and JavaScript. No package installation, framework, external font service, analytics, or runtime API is required.
+An English-only personal desktop with a blog, a photo album, publications, research interests, scholarships and grants, and selected work. The static pages build with Node.js alone. The blog loads public GitHub comments when a reader reaches the discussion.
 
 ## Develop
 
@@ -27,6 +27,7 @@ npm run check
 | ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
 | `content/profile.json`              | Profile links, publication metadata, BibTeX, and all seven honors                                                      |
 | `site/index.html`                   | Homepage structure and personal introduction                                                                           |
+| `site/blog/`                        | Writing index, articles, native MathML, illustrations, and the GitHub issue comment reader                              |
 | `site/styles.css`                   | Responsive desktop, dark/light themes, and reduced-motion rules                                                        |
 | `site/app.js`                       | Session introduction, Beijing clock, theme switch, keyboard search, dialogs, selected-work tabs, and copy-email action |
 | `assets/`                           | Locally served images, fonts, licenses, and favicon                                                                    |
