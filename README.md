@@ -2,7 +2,7 @@
 
 Personal research homepage at **https://hsch22.github.io/**.
 
-An English-only personal desktop with a full-screen introduction, compact translucent widgets, publications, research interests, scholarships and grants, and selected work. Built with semantic HTML, CSS, and JavaScript. No package installation, framework, external font service, analytics, or runtime API is required.
+An English-only personal desktop with a photo album, a full-screen introduction, publications, research interests, scholarships and grants, and selected work. Built with semantic HTML, CSS, and JavaScript. No package installation, framework, external font service, analytics, or runtime API is required.
 
 ## Develop
 
@@ -41,6 +41,18 @@ Publication rows link directly to papers, with separate buttons opening full met
 JavaScript is required for the introduction, dialogs, search, work-tab switching, clock, and theme controls. Without JavaScript, the desktop and its direct public links remain available, including both paper links, Scholar, GitHub, and the WorldSimProbe project. Dialog content and the second selected-work panel are not available through those inactive controls.
 
 Only explicitly selected directories enter `dist/`. Development scripts, deployment records, and provenance notes are not published.
+
+## Add a photograph
+
+The camera roll lives at `/photos/`. To import a HEIC on macOS, install the Homebrew packages `libheif` and `webp`. The importer uses their `heif-convert` and `cwebp` commands together with the built-in `sips`.
+
+```sh
+npm run photo:add -- "/path/to/IMG_1234.heic" open-country 05-morning-light "The first sunlight reaches a snowy hillside."
+```
+
+Choose a collection, an unused numbered key, and English alt text for screen readers. Keys determine the order within each collection. The command writes two WebP sizes and the image metadata to `content/photos/`. Run `npm start` to preview the new arrangement. Commit the generated photo directory to publish it with the next site update.
+
+Edit `content/album.json` to add collections, choose the two opening photographs, or change the desktop cover. The site builds on GitHub with Node.js alone.
 
 ## Existing URLs and cache migration
 

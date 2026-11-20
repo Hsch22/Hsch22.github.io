@@ -25,7 +25,12 @@
       property="og:image"
       content="https://hsch22.github.io/assets/sicheng-hu.jpg"
     />
-    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+    <link
+      rel="icon"
+      href="/assets/favicon.svg?v=sun"
+      sizes="any"
+      type="image/svg+xml"
+    />
     <link
       rel="preload"
       href="/assets/newsreader.ttf"
@@ -33,7 +38,7 @@
       type="font/ttf"
       crossorigin
     />
-    <link rel="stylesheet" href="/styles.css?v=cift-fig2" />
+    <link rel="stylesheet" href="/styles.css?v=camera-roll" />
     <script src="/magic-entry.js"></script>
     <script src="/app.js" defer></script>
     <script type="application/ld+json">
@@ -106,6 +111,13 @@
           </section>
         </div>
         <div class="desk-column middle-column">
+          <a
+            class="desktop-album"
+            href="/photos/"
+            aria-label="Open my camera roll"
+          >
+            {{DESKTOP_PHOTO}}
+          </a>
           <section
             class="widget interests-widget"
             aria-labelledby="interests-title"
@@ -276,40 +288,29 @@
     <dialog id="about" class="intro" aria-labelledby="intro-title">
       <div class="edge-light" aria-hidden="true"></div>
       <div class="intro-content">
-        <div class="intro-kicker">
-          <img
-            src="/assets/sicheng-hu.jpg"
-            alt=""
-            width="32"
-            height="32"
-          /><span>Sicheng Hu</span>
+        <div class="intro-copy">
+          <div class="intro-kicker">
+            <img
+              src="/assets/sicheng-hu.jpg"
+              alt=""
+              width="32"
+              height="32"
+            /><span>Sicheng Hu</span>
+          </div>
+          <h2 id="intro-title" tabindex="-1" autofocus>Hello, I'm Sicheng.</h2>
+          <p>
+            I’m interested in how machines understand the physical world and
+            learn to act in it.
+          </p>
+          <p>
+            At <a href="https://www.pku.edu.cn/">Peking University</a>, I work
+            on <em>world models</em> and <em>embodied intelligence</em>. I like
+            getting a model running and seeing what it does.
+          </p>
         </div>
-        <h2 id="intro-title" tabindex="-1" autofocus>Hello, I'm Sicheng.</h2>
-        <p>
-          I’m interested in how machines understand the physical world — and
-          learn to act in it.
-        </p>
-        <p>
-          At <a href="https://www.pku.edu.cn/">Peking University</a>, I work on
-          <em>world models</em> and <em>embodied intelligence</em>. I’m drawn to
-          the gap between a model that generates something convincing and one
-          that faithfully responds to an action.
-        </p>
-        <p>
-          With <a href="https://evophys.com/WorldSimProbe/">WorldSimProbe</a>, I
-          study that gap through simulator evaluation. With
-          <a href="https://arxiv.org/abs/2509.24797">CIFT</a>, I explore how the
-          composition of real and generated data shapes robot generalization.
-        </p>
-        <p>
-          I also enjoy the engineering that makes research possible: working
-          with data, training models, and getting inference and evaluation to
-          run well.
-        </p>
-        <p class="intro-postscript">
-          A few papers, a few experiments, and plenty of open questions.<br />Welcome
-          to my space.
-        </p>
+        <a class="intro-album" href="/photos/" aria-label="Open my photo album">
+          <span class="intro-prints">{{INTRO_PHOTOS}}</span>
+        </a>
         <div class="intro-actions">
           <button type="button" class="enter-button" id="enter-desktop">
             Enter <kbd>esc</kbd><span aria-hidden="true">↗</span>
@@ -388,6 +389,11 @@
       <ul id="search-results">
         <li>
           <a href="#about"><span>About Sicheng</span><span>Profile</span></a>
+        </li>
+        <li>
+          <a href="/photos/"
+            ><span>Camera roll</span><span>Photographs</span></a
+          >
         </li>
         <li>
           <a href="#research"

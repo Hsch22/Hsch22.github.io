@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#191b20" />
+    <title>Camera roll — Sicheng Hu</title>
+    <meta
+      name="description"
+      content="Photographs from Sicheng Hu’s camera roll."
+    />
+    <link rel="canonical" href="https://hsch22.github.io/photos/" />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      sizes="any"
+      href="/assets/favicon.svg?v=sun"
+    />
+    <link rel="stylesheet" href="/styles.css?v=camera-roll" />
+    <link rel="stylesheet" href="/photos.css?v=1" />
+    <script src="/photos.js?v=1" defer></script>
+  </head>
+  <body class="album-page">
+    <a class="skip-link" href="#main">Skip to photographs</a>
+    <div class="album-shell">
+      <header class="album-tools">
+        <a class="album-control" href="/" aria-label="Back to homepage">
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path d="M20 12H4m7-7-7 7 7 7" />
+          </svg>
+        </a>
+      </header>
+      <main id="main">
+        <h1 class="sr-only">Camera roll</h1>
+        {{ALBUM_SECTIONS}}
+      </main>
+    </div>
+    <dialog
+      class="photo-viewer"
+      id="photo-viewer"
+      aria-label="Photograph viewer"
+    >
+      <button
+        type="button"
+        class="album-control"
+        id="viewer-close"
+        aria-label="Close photograph"
+        autofocus
+      >
+        <svg aria-hidden="true" viewBox="0 0 24 24">
+          <path d="m6 6 12 12M18 6 6 18" />
+        </svg>
+      </button>
+      <div class="viewer-stage"></div>
+      <button
+        type="button"
+        class="album-control"
+        id="viewer-previous"
+        aria-label="Previous photograph"
+      >
+        <svg aria-hidden="true" viewBox="0 0 24 24">
+          <path d="m15 5-7 7 7 7" />
+        </svg>
+      </button>
+      <button
+        type="button"
+        class="album-control"
+        id="viewer-next"
+        aria-label="Next photograph"
+      >
+        <svg aria-hidden="true" viewBox="0 0 24 24">
+          <path d="m9 5 7 7-7 7" />
+        </svg>
+      </button>
+      <span class="sr-only" id="viewer-position" role="status"></span>
+    </dialog>
+  </body>
+</html>

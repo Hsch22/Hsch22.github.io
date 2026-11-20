@@ -15,6 +15,8 @@ Verified on November 15, 2026. This file is not included in the published websit
 
 The owner explicitly requested an English-only website. The public profile link is canonical and does not retain authentication or tracking parameters from the supplied URL.
 
+The eight photographs added to the camera roll on November 20, 2026 came from the owner’s HEIC files. The published WebP copies retain each original composition. Screen-reader descriptions are based on the images. Camera and location metadata are stripped on export.
+
 The introduction is shown once per browser session and remains available through the About controls and `/#about`; the legacy `/about/` URL redirects there. Introduction, honors, contact, and paper dialogs require JavaScript, as do search and selected-work tab switching. Direct public links on the desktop remain usable without JavaScript. All publication and honor metadata is rendered at build time; the three-award preview does not replace or remove any of the seven supplied honors.
 
 ## Selected-work covers
