@@ -77,15 +77,22 @@
 .index-entry h2 {
   font: 400 clamp(3.35rem, 6.5vw, 5.9rem)/0.98 var(--serif);
   letter-spacing: -0.045em;
-  text-wrap: balance;
+}
+.hero-copy {
+  container-type: inline-size;
 }
 .hero-copy h1 {
   margin: 23px 0 20px;
+  font-size: clamp(2rem, 12.5cqi, 4.5rem);
+  line-height: 1.04;
 }
 .standfirst {
   color: #3f4e4a;
   font: 400 clamp(1.03rem, 1.45vw, 1.19rem)/1.54 var(--sans);
-  max-width: 39ch;
+  max-inline-size: 52ch;
+}
+.standfirst p:last-child {
+  margin-block-start: 0.55em;
 }
 .byline {
   margin-top: 21px;
@@ -139,7 +146,6 @@
 .comments-head h2 {
   font: 450 clamp(2rem, 3.3vw, 2.75rem)/1.08 var(--serif);
   letter-spacing: -0.029em;
-  text-wrap: balance;
 }
 .essay-prose h2 + p {
   margin-top: 17px;
@@ -159,6 +165,8 @@
   white-space: nowrap;
 }
 .essay-prose .source {
+  display: inline-block;
+  max-inline-size: 100%;
   color: var(--link);
   font: 550 0.89rem/1.4 var(--sans);
   text-decoration: underline;
@@ -430,12 +438,6 @@
   .essay-hero {
     gap: 26px;
     padding-block: 38px 30px;
-  }
-  .hero-copy h1 {
-    max-width: 14ch;
-  }
-  .standfirst {
-    max-width: 52ch;
   }
   .byline {
     margin-top: 14px;

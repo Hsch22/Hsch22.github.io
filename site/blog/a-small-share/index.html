@@ -42,8 +42,8 @@
       type="font/ttf"
       crossorigin
     />
-    <link rel="stylesheet" href="/styles.css?v=writing" />
-    <link rel="stylesheet" href="/blog/reading.css?v=1" />
+    <link rel="stylesheet" href="/styles.css?v=phrases" />
+    <link rel="stylesheet" href="/blog/reading.css?v=2" />
     <script src="/blog/a-small-share/coverage.js" defer></script>
     <script src="/blog/comments.js" defer></script>
   </head>
@@ -69,12 +69,18 @@
             <p class="dateline">
               <time datetime="2026-11-20">November 20, 2026</time>
             </p>
-            <h1>When a small share is enough</h1>
-            <p class="standfirst">
-              The smallest share we tried already improved object persistence.
-              More footage kept lowering prediction error. Which result should
-              decide the training mix?
-            </p>
+            <h1>
+              <span class="phrase">When <span class="phrase">a small share</span></span>
+              <span class="phrase">is enough</span>
+            </h1>
+            <div class="standfirst">
+              <p>
+                <span class="phrase">The smallest share we tried</span>
+                <span class="phrase">already improved <span class="phrase">object persistence.</span></span>
+              </p>
+              <p>More footage <span class="phrase">kept lowering prediction error.</span></p>
+              <p>Which result <span class="phrase">should decide the training mix?</span></p>
+            </div>
             <p class="byline">Sicheng Hu</p>
           </div>
           <img
@@ -99,7 +105,7 @@
           </aside>
           <div class="essay-prose">
             <section id="comparison">
-              <h2>Two ways to improve</h2>
+              <h2>Two ways <span class="phrase">to improve</span></h2>
               <p>
                 Roll a red ball behind a screen. For a moment, the right
                 prediction is an empty stretch of tabletop. The interesting
@@ -109,12 +115,15 @@
               <p>
                 That distinction changed how I read a set of video-model
                 experiments. The runs began from the same weights and had the
-                same budget of training footage. In one comparison, the smallest
-                tested allotment of a source rich in physical interactions
-                already improved interaction and object persistence over the
-                starting model. A larger allotment drove down the error on fresh
-                clips from that source. The two rollout scores barely moved
-                beyond their earlier gains.
+                same budget of training footage.
+              </p>
+              <p>
+                In one comparison, the smallest tested allotment of a source
+                rich in physical interactions already improved interaction and
+                object persistence over the starting model.
+                A larger allotment drove down the error on fresh clips from
+                that source. The two rollout scores barely moved beyond their
+                earlier gains.
               </p>
               <figure class="comparison-figure">
                 <picture>
@@ -186,7 +195,7 @@
                 id="coverage-demo"
                 aria-labelledby="coverage-heading"
               >
-                <h3 id="coverage-heading">Give the specialist a share</h3>
+                <h3 id="coverage-heading">Give the specialist <span class="phrase">a share</span></h3>
                 <p class="demo-budget">
                   <strong id="specialist-count">8 specialist clips</strong
                   ><span aria-hidden="true"> / </span
@@ -307,7 +316,7 @@
               </p>
             </section>
             <section id="exchange">
-              <h2>Who gives up a step?</h2>
+              <h2>Who <span class="phrase">gives up</span> <span class="phrase">a step?</span></h2>
               <p>
                 A ratio needs a unit. Suppose a long-video batch fits two clips
                 and a short-video batch fits six. If batches alternate, the long
@@ -321,9 +330,12 @@
                 ><sub>S</sub> for the mean gradient from specialist data,
                 <var>g</var><sub>B</sub> for the broad data that would give up
                 some of its share, and <var>g</var><sub>T</sub> for the gradient
-                of a target loss. Move a fraction <var>δ</var> of the sampling
-                probability from broad to specialist. To first order, the change
-                in target loss relative to the original update is
+                of a target loss.
+              </p>
+              <p>
+                Move a fraction <var>δ</var> of the sampling probability from
+                broad to specialist. To first order, the change in target loss
+                relative to the original update is
               </p>
               <div class="equation">
                 <math
@@ -363,13 +375,16 @@
               </p>
             </section>
             <section id="rollout">
-              <h2>Watch the ball come back</h2>
+              <h2><span class="phrase">Watch the ball</span> <span class="phrase">come back</span></h2>
               <p>
                 In another video comparison, single-step error barely separated
                 two mixtures. Short memory probes also looked much the same. The
                 difference showed up when the model had to carry information
-                across longer sequences. Once it generates the wrong state, that
-                state becomes the input for its next prediction. Talvitie gives
+                across longer sequences.
+              </p>
+              <p>
+                Once it generates the wrong state, that state becomes the input
+                for its next prediction. Talvitie gives
                 a precise example of how two models with the same one-step
                 errors can behave differently when run forward.
                 <a class="source" href="https://arxiv.org/abs/1612.06018"

@@ -97,6 +97,10 @@ h3,
 p {
   margin: 0;
 }
+.phrase {
+  display: inline-block;
+  max-inline-size: 100%;
+}
 ul,
 ol {
   margin: 0;
