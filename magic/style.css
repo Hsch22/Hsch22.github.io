@@ -1,20 +1,23 @@
 /* Geometry measured from an iOS 26 Calculator screenshot on a 393 x 852 pt iPhone (15/16/17 Pro size).
    CSS px == iOS pt. Everything scales with screen width via --u so other models stay proportional. */
 :root {
+  color-scheme: light dark;
+  --canvas: light-dark(#f5f5f5, #000000);
+  --ink: light-dark(#181819, #ffffff);
+  --operator-ink: light-dark(#382000, #ffffff);
   --u: calc(100vw / 393);   /* one iOS point on a 393pt-wide screen */
 
-  --orange: #ff9201;
-  --orange-dark: #fa8c00;
-  --orange-press: #fcc78d;
-  --fn: #5e5e5e;
-  --fn-dark: #525252;
-  --fn-press: #a5a5a8;
-  --num: #343434;
-  --num-dark: #2e2e2e;
-  --num-press: #737373;
-  --top: #202020;
-  --white: #ffffff;
-  --rim: rgba(255, 255, 255, 0.16);
+  --orange: light-dark(#f2a44a, #c5701c);
+  --orange-dark: light-dark(#ec9636, #bb6217);
+  --orange-press: light-dark(#f7bd79, #e9a86b);
+  --fn: light-dark(#c7c8ca, #5e5e5e);
+  --fn-dark: light-dark(#bbbcbe, #525252);
+  --fn-press: light-dark(#a7a8ab, #a5a5a8);
+  --num: light-dark(#e7e7e8, #343434);
+  --num-dark: light-dark(#dbdcde, #2e2e2e);
+  --num-press: light-dark(#bfc0c3, #737373);
+  --top: light-dark(#dedfe1, #202020);
+  --rim: light-dark(#00000019, #ffffff29);
 
   --pad-x: calc(16 * var(--u));
   --gap-x: calc(8 * var(--u));
@@ -26,14 +29,16 @@
   --label-size: calc(35 * var(--u));
 }
 
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"] { color-scheme: dark; }
 * { box-sizing: border-box; }
 
 html, body {
   margin: 0;
   padding: 0;
   height: 100%;
-  background: #000;
-  color: var(--white);
+  background: var(--canvas);
+  color: var(--ink);
   overflow: hidden;
   overscroll-behavior: none;
   -webkit-text-size-adjust: 100%;
@@ -48,10 +53,10 @@ html, body {
 .calc {
   position: fixed;
   inset: 0;
-  background: #000;
+  background: var(--canvas);
   touch-action: manipulation;
 }
-/* Phone held sideways: just go black. The portrait layout is the only one. */
+/* In landscape, keep the canvas blank. The keypad is portrait-only. */
 @media (orientation: landscape) {
   .calc { visibility: hidden; pointer-events: none; }
 }
@@ -86,8 +91,8 @@ button svg {
   height: var(--top-btn);
   border-radius: 50%;
   background: var(--top);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
-  color: var(--white);
+  box-shadow: inset 0 0 0 1px var(--rim);
+  color: var(--ink);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -95,7 +100,8 @@ button svg {
 }
 .round.history { left: var(--pad-x); }
 .round.mode { right: var(--pad-x); }
-.round.pressed { transition: none; background: #3a3a3a; }
+.round.pressed { transition: none; background: light-dark(#c4c5c7, #3a3a3a); }
+.round:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
 
 /* Keypad. Anchored from the top: in a home-screen web app iOS reports a viewport that is
    shorter than the screen by the status-bar height, so bottom anchoring lands too high.
@@ -126,7 +132,7 @@ button svg {
   font-size: var(--label-size);
   font-weight: 400;
   line-height: 1;
-  color: var(--white);
+  color: var(--ink);
   box-shadow: inset 0 0 0 1px var(--rim);
   transition: background-color 0.28s ease-out, color 0.28s ease-out;
 }
@@ -139,12 +145,12 @@ button svg {
 }
 .key.num { background: linear-gradient(160deg, var(--num) 55%, var(--num-dark)); }
 .key.fn  { background: linear-gradient(160deg, var(--fn) 45%, var(--fn-dark)); }
-.key.op  { background: linear-gradient(180deg, var(--orange) 60%, var(--orange-dark)); }
+.key.op  { background: linear-gradient(180deg, var(--orange) 60%, var(--orange-dark)); color: var(--operator-ink); }
 
 .key.pressed { transition: none; }
 .key.num.pressed { background: var(--num-press); }
-.key.fn.pressed  { background: var(--fn-press); }
-.key.op.pressed  { background: var(--orange-press); }
+.key.fn.pressed  { background: var(--fn-press); color: #181819; }
+.key.op.pressed  { background: var(--orange-press); color: #382000; }
 
 /* Text labels render slightly low relative to the reference; nudge them up */
 .key.num:not([data-key="negate"]), .key.fn[data-key="clear"] { padding-bottom: calc(0.8 * var(--u)); }
@@ -158,7 +164,7 @@ button svg {
   right: calc(15.5 * var(--u));
   top: calc(var(--safe-top) + 160.8 * var(--u));
   height: calc(27 * var(--u));
-  color: #8e8e93;
+  color: light-dark(#5e6064, #a3a3a8);
   display: flex;
   align-items: center;
   justify-content: flex-end;

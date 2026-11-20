@@ -1,9 +1,12 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#191b20" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" data-theme="light" content="#f4f2ed" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" data-theme="dark" content="#1a201d" media="(prefers-color-scheme: dark)" />
+    <script src="/theme.js"></script>
     <title>Camera roll — Sicheng Hu</title>
     <meta
       name="description"
@@ -16,8 +19,8 @@
       sizes="any"
       href="/assets/favicon.svg?v=sun"
     />
-    <link rel="stylesheet" href="/styles.css?v=camera-roll" />
-    <link rel="stylesheet" href="/photos.css?v=1" />
+    <link rel="stylesheet" href="/styles.css?v=appearance" />
+    <link rel="stylesheet" href="/photos.css?v=appearance" />
     <script src="/photos.js?v=1" defer></script>
   </head>
   <body class="album-page">
@@ -29,6 +32,7 @@
             <path d="M20 12H4m7-7-7 7 7 7" />
           </svg>
         </a>
+        <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false" aria-label="Dark mode" title="Dark mode" hidden></button>
       </header>
       <main id="main">
         <h1 class="sr-only">Camera roll</h1>
@@ -51,6 +55,7 @@
           <path d="m6 6 12 12M18 6 6 18" />
         </svg>
       </button>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false" aria-label="Dark mode" title="Dark mode" hidden></button>
       <div class="viewer-stage"></div>
       <button
         type="button"

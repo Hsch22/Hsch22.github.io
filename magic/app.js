@@ -519,10 +519,16 @@
   function longPress(btn, onFire, onRelease) {
     let timer = null;
     let fired = false;
+    let suppressTap = false;
     btn.addEventListener('pointerdown', () => {
       btn.classList.add('pressed');
       fired = false;
-      timer = setTimeout(() => { fired = true; onFire(); }, LONG_PRESS_MS);
+      suppressTap = secret.armed;
+      timer = setTimeout(() => {
+        fired = true;
+        suppressTap = true;
+        onFire();
+      }, LONG_PRESS_MS);
     });
     const end = () => {
       btn.classList.remove('pressed');
@@ -533,6 +539,10 @@
     btn.addEventListener('pointerup', end);
     btn.addEventListener('pointercancel', end);
     btn.addEventListener('pointerleave', end);
+    btn.addEventListener('click', (e) => {
+      // A long press already handled this gesture before its click arrived.
+      if (secret.armed || (e.detail !== 0 && suppressTap)) e.stopPropagation();
+    });
     btn.addEventListener('contextmenu', (e) => e.preventDefault());
   }
 
@@ -558,6 +568,7 @@
 
   // Keyboard support (handy on desktop).
   document.addEventListener('keydown', (e) => {
+    if (e.target === modeBtn && e.key === 'Enter' && !secret.armed) return;
     const map = { Enter: '=', '=': '=', Backspace: 'bs', Escape: 'clear', '%': 'percent', x: '*', X: '*' };
     const key = map[e.key] || e.key;
     if (/^[0-9.+\-*\/=]$/.test(key) || key === 'clear' || key === 'percent' || key === 'bs') {

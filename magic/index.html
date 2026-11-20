@@ -9,7 +9,10 @@
   <!-- Opaque bar: content must not sit under the status bar, or iOS 26 blurs and darkens it -->
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-mobile-web-app-title" content="Calculator">
-  <meta name="theme-color" content="#000000">
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" data-theme="light" content="#f5f5f5" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" data-theme="dark" content="#000000" media="(prefers-color-scheme: dark)" />
+  <script src="theme.js"></script>
   <meta name="format-detection" content="telephone=no">
   <link rel="apple-touch-icon" href="calc-icon.png">
   <link rel="icon" href="calc-icon.png">
@@ -27,7 +30,7 @@
       </svg>
     </button>
     <!-- Top-right: calculator mode. Long-press shows the target while held. -->
-    <button class="round mode" id="modeBtn" aria-label="Calculator mode" type="button">
+    <button class="round mode" id="modeBtn" data-theme-toggle aria-label="Dark mode" aria-pressed="false" title="Change appearance" type="button">
       <svg viewBox="0 0 26.7 38.7" style="--w:15.8;--h:22.5">
         <mask id="calcMask">
           <rect x="0" y="0" width="26.7" height="38.7" rx="5.5" fill="#fff"/>

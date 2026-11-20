@@ -2,6 +2,7 @@ const demo = document.querySelector("#coverage-demo");
 const input = demo.querySelector("#clip-count");
 const specialist = demo.querySelector("#specialist-count");
 const broad = demo.querySelector("#broad-count");
+const chinese = document.documentElement.lang === "zh-CN";
 const events = [
   {
     rate: 1 / 4,
@@ -18,11 +19,11 @@ const events = [
 function showAllocation() {
   const count = input.valueAsNumber;
   const remaining = Number(input.max) - count;
-  specialist.textContent = `${count} specialist ${count === 1 ? "clip" : "clips"}`;
-  broad.textContent = `${remaining} ordinary ${remaining === 1 ? "clip" : "clips"}`;
+  specialist.textContent = chinese ? `${count} 段专项视频` : `${count} specialist ${count === 1 ? "clip" : "clips"}`;
+  broad.textContent = chinese ? `${remaining} 段普通视频` : `${remaining} ordinary ${remaining === 1 ? "clip" : "clips"}`;
   input.setAttribute(
     "aria-valuetext",
-    `${specialist.textContent}, ${broad.textContent}`,
+    [specialist.textContent, broad.textContent].join(chinese ? "，" : ", "),
   );
   for (const event of events) {
     const probability = 1 - (1 - event.rate) ** count;

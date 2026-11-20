@@ -4,7 +4,20 @@ const status = comments.querySelector("#comment-status");
 const more = comments.querySelector("#more-comments");
 const thread = `https://github.com/Hsch22/Hsch22.github.io/issues/${comments.dataset.issue}`;
 const endpoint = `https://api.github.com/repos/Hsch22/Hsch22.github.io/issues/${comments.dataset.issue}/comments`;
-const dates = new Intl.DateTimeFormat("en", { dateStyle: "medium" });
+const locale = document.documentElement.lang;
+const dates = new Intl.DateTimeFormat(locale, { dateStyle: "medium" });
+const messages = {
+  en: {
+    deleted: "Deleted account", loading: "Loading comments…", more: "Load more comments",
+    empty: "Be the first to leave a comment.", retry: "Try again",
+    error: "Comments could not be loaded. You can read the thread on GitHub.",
+  },
+  "zh-CN": {
+    deleted: "已注销的账号", loading: "正在加载评论…", more: "加载更多评论",
+    empty: "还没有评论，来留第一条吧。", retry: "重试",
+    error: "暂时无法加载评论，你可以前往 GitHub 查看。",
+  },
+}[locale];
 const shown = new Set();
 let page = 1;
 
@@ -12,7 +25,7 @@ function renderComment(comment) {
   const entry = document.createElement("li");
   const header = document.createElement("div");
   const author = document.createElement("strong");
-  author.textContent = comment.user?.login ?? "Deleted account";
+  author.textContent = comment.user?.login ?? messages.deleted;
   const permalink = document.createElement("a");
   permalink.href = `${thread}#issuecomment-${comment.id}`;
   const date = document.createElement("time");
@@ -28,7 +41,7 @@ function renderComment(comment) {
 
 async function loadComments() {
   more.disabled = true;
-  status.textContent = "Loading comments…";
+  status.textContent = messages.loading;
   try {
     const response = await fetch(`${endpoint}?per_page=30&page=${page}`, {
       headers: { Accept: "application/vnd.github.text+json" },
@@ -48,14 +61,13 @@ async function loadComments() {
     for (const id of added) shown.add(id);
     const hasNext = (response.headers.get("Link") ?? "").includes('rel="next"');
     more.hidden = !hasNext;
-    more.textContent = "Load more comments";
+    more.textContent = messages.more;
     status.textContent =
-      shown.size || hasNext ? "" : "Be the first to leave a comment.";
+      shown.size || hasNext ? "" : messages.empty;
     page++;
   } catch {
-    status.textContent =
-      "Comments could not be loaded. You can read the thread on GitHub.";
-    more.textContent = "Try again";
+    status.textContent = messages.error;
+    more.textContent = messages.retry;
     more.hidden = false;
   } finally {
     more.disabled = false;

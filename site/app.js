@@ -1,22 +1,3 @@
-const root = document.documentElement;
-const themeButton = document.querySelector(".theme-toggle");
-
-function applyTheme(theme) {
-  if (!["light", "dark"].includes(theme))
-    throw new Error(`Unsupported theme: ${theme}`);
-  root.dataset.theme = theme;
-  themeButton.setAttribute(
-    "aria-label",
-    `Switch to ${theme === "dark" ? "light" : "dark"} theme`,
-  );
-  document.querySelector('meta[name="theme-color"]').content =
-    theme === "dark" ? "#171a21" : "#e7e8ed";
-}
-
-themeButton.addEventListener("click", () => {
-  applyTheme(root.dataset.theme === "dark" ? "light" : "dark");
-});
-
 const timeFormat = new Intl.DateTimeFormat("en-GB", {
   timeZone: "Asia/Shanghai",
   hour: "2-digit",
