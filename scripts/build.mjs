@@ -153,6 +153,7 @@ async function renderPage(source, destination) {
 }
 await renderPage("index.html", "index.html");
 await renderPage("photos.html", "photos/index.html");
+await renderPage("404.html", "404.html");
 await cp(path.join(root, "site/blog"), path.join(out, "blog"), { recursive: true });
 await Promise.all(
   [
@@ -171,6 +172,8 @@ await cp(path.join(root, "assets"), path.join(out, "assets"), {
 await cp(path.join(root, "magic"), path.join(out, "magic"), {
   recursive: true,
 });
+// The calculator keeps its own offline copy of the shared appearance control.
+await cp(path.join(root, "magic/theme.js"), path.join(out, "theme.js"));
 await mkdir(path.join(out, "citations"));
 await Promise.all(
   profile.publications.map((p) =>
@@ -195,17 +198,13 @@ for (const route of redirects.routes) {
   await mkdir(path.dirname(destination), { recursive: true });
   await writeFile(
     destination,
-    `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>EvoPhys has moved</title><link rel="canonical" href="${escape(route.target)}"><script src="/evophys-redirect.js"></script></head><body><p>EvoPhys has moved to <a href="${escape(route.target)}">${escape(route.target)}</a>.</p></body></html>`,
+    `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1"><title>EvoPhys has moved</title><link rel="canonical" href="${escape(route.target)}"><script src="/evophys-redirect.js"></script></head><body><p>EvoPhys has moved to <a href="${escape(route.target)}">${escape(route.target)}</a>.</p></body></html>`,
   );
 }
-await writeFile(
-  path.join(out, "404.html"),
-  `<!doctype html><html lang="en" data-theme="dark"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Page not found — Sicheng Hu</title><link rel="icon" href="/assets/favicon.svg?v=sun"><link rel="stylesheet" href="/styles.css"><script src="/evophys-redirect.js"></script></head><body class="error-page"><main><h1>Lost in space?</h1><p>This page doesn't exist. Let's get you back home.</p><a href="/">Back to Sicheng's space ↗</a></main></body></html>`,
-);
 await mkdir(path.join(out, "about"));
 await writeFile(
   path.join(out, "about/index.html"),
-  `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="refresh" content="0;url=/#about"><title>About Sicheng Hu</title><link rel="icon" href="/assets/favicon.svg?v=sun"><link rel="canonical" href="https://hsch22.github.io/#about"></head><body><a href="/#about">About Sicheng Hu</a></body></html>`,
+  `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="color-scheme" content="light dark"><meta http-equiv="refresh" content="0;url=/#about"><title>About Sicheng Hu</title><link rel="icon" href="/assets/favicon.svg?v=sun"><link rel="canonical" href="https://hsch22.github.io/#about"></head><body><a href="/#about">About Sicheng Hu</a></body></html>`,
 );
 await writeFile(path.join(out, ".nojekyll"), "");
 await writeFile(
@@ -214,7 +213,7 @@ await writeFile(
 );
 await writeFile(
   path.join(out, "sitemap.xml"),
-  `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://hsch22.github.io/</loc><lastmod>${escape(profile.updated)}</lastmod></url><url><loc>https://hsch22.github.io/photos/</loc></url><url><loc>https://hsch22.github.io/blog/</loc></url><url><loc>https://hsch22.github.io/blog/a-small-share/</loc></url></urlset>`,
+  `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://hsch22.github.io/</loc><lastmod>${escape(profile.updated)}</lastmod></url>${["/photos/", "/blog/", "/blog/zh/", "/blog/a-small-share/", "/blog/zh/a-small-share/"].map(route => `<url><loc>https://hsch22.github.io${route}</loc></url>`).join("")}</urlset>`,
 );
 console.log(
   `Built dist/: ${profile.publications.length} publications, ${profile.honors.length} honors, ${album.PHOTO_COUNT} photographs, ${redirects.routes.length} preserved EvoPhys redirects, and Magic.`,

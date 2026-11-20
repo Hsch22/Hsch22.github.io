@@ -2,8 +2,8 @@
 // refreshes the cache in the background so the next launch picks up updates.
 // CacheStorage is shared with the blog and other apps on the same origin.
 const CACHE_PREFIX = `calcdm:${self.registration.scope}:`;
-const CACHE = `${CACHE_PREFIX}v13`;
-const ASSETS = ['./', './index.html', './style.css', './app.js', './manifest.webmanifest', './calc-icon.png'];
+const CACHE = `${CACHE_PREFIX}v14`;
+const ASSETS = ['./', './index.html', './style.css', './app.js', './theme.js', './manifest.webmanifest', './calc-icon.png'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE)

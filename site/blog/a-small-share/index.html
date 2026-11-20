@@ -1,16 +1,24 @@
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#f9f9f5" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" data-theme="light" content="#f9f9f5" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" data-theme="dark" content="#1b211f" media="(prefers-color-scheme: dark)" />
+    <script src="/theme.js"></script>
     <title>When a small share is enough — Sicheng Hu</title>
     <meta
       name="description"
       content="How much specialist data earns a place in a training mix? An illustrated essay on coverage, replay, and what the next training step buys."
     />
     <link rel="canonical" href="https://hsch22.github.io/blog/a-small-share/" />
+    <link rel="alternate" hreflang="en" href="https://hsch22.github.io/blog/a-small-share/" />
+    <link rel="alternate" hreflang="zh-CN" href="https://hsch22.github.io/blog/zh/a-small-share/" />
+    <link rel="alternate" hreflang="x-default" href="https://hsch22.github.io/blog/a-small-share/" />
     <meta property="og:type" content="article" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="zh_CN" />
     <meta property="og:title" content="When a small share is enough" />
     <meta
       property="og:description"
@@ -42,10 +50,11 @@
       type="font/ttf"
       crossorigin
     />
-    <link rel="stylesheet" href="/styles.css?v=phrases" />
-    <link rel="stylesheet" href="/blog/reading.css?v=2" />
-    <script src="/blog/a-small-share/coverage.js" defer></script>
-    <script src="/blog/comments.js" defer></script>
+    <link rel="stylesheet" href="/styles.css?v=appearance" />
+    <link rel="stylesheet" href="/blog/reading.css?v=editions" />
+    <script src="/blog/reading.js" defer></script>
+    <script src="/blog/a-small-share/coverage.js?v=editions" defer></script>
+    <script src="/blog/comments.js?v=editions" defer></script>
   </head>
   <body class="reading-page">
     <a class="skip-link" href="#article">Skip to the article</a>
@@ -61,6 +70,10 @@
       <nav aria-label="Blog navigation">
         <a href="/blog/">Blog</a><a href="#comments">Comments</a>
       </nav>
+      <div class="reading-tools">
+        <a class="language-link" href="/blog/zh/a-small-share/" lang="zh-CN" hreflang="zh-CN">中文</a>
+        <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false" aria-label="Dark mode" title="Dark mode" hidden></button>
+      </div>
     </header>
     <main id="article">
       <article>
@@ -83,14 +96,17 @@
             </div>
             <p class="byline">Sicheng Hu</p>
           </div>
-          <img
-            class="cover-plate"
-            src="/blog/a-small-share/occlusion.webp"
-            width="1500"
-            height="1000"
-            fetchpriority="high"
-            alt="Successive positions of a vermilion ball rolling behind a folded blue screen and emerging on the other side."
-          />
+          <picture>
+            <source data-theme="dark" media="(prefers-color-scheme: dark)" srcset="/blog/a-small-share/occlusion-night.webp" />
+            <img
+              class="cover-plate"
+              src="/blog/a-small-share/occlusion.webp"
+              width="1500"
+              height="1000"
+              fetchpriority="high"
+              alt="Successive positions of a vermilion ball rolling behind a folded blue screen and emerging on the other side."
+            />
+          </picture>
         </header>
         <div class="essay-layout">
           <aside class="contents">
@@ -129,12 +145,12 @@
                 <picture>
                   <source
                     media="(max-width: 520px)"
-                    srcset="/blog/a-small-share/response-narrow.webp"
+                    srcset="/blog/a-small-share/response-narrow.svg"
                     width="640"
                     height="455"
                   />
                   <img
-                    src="/blog/a-small-share/response.webp"
+                    src="/blog/a-small-share/response.svg"
                     width="1200"
                     height="504"
                     loading="lazy"

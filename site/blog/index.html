@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -8,16 +8,22 @@
       name="description"
       content="Essays by Sicheng Hu on world models, data and learning."
     />
-    <meta name="theme-color" content="#f9f9f5" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" data-theme="light" content="#f9f9f5" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" data-theme="dark" content="#1b211f" media="(prefers-color-scheme: dark)" />
+    <script src="/theme.js"></script>
     <link rel="canonical" href="https://hsch22.github.io/blog/" />
+    <link rel="alternate" hreflang="en" href="https://hsch22.github.io/blog/" />
+    <link rel="alternate" hreflang="zh-CN" href="https://hsch22.github.io/blog/zh/" />
+    <link rel="alternate" hreflang="x-default" href="https://hsch22.github.io/blog/" />
     <link
       rel="icon"
       href="/assets/favicon.svg?v=sun"
       type="image/svg+xml"
       sizes="any"
     />
-    <link rel="stylesheet" href="/styles.css?v=phrases" />
-    <link rel="stylesheet" href="/blog/reading.css?v=2" />
+    <link rel="stylesheet" href="/styles.css?v=appearance" />
+    <link rel="stylesheet" href="/blog/reading.css?v=editions" />
   </head>
   <body class="reading-page blog-index">
     <a class="skip-link" href="#main">Skip to writing</a>
@@ -29,18 +35,26 @@
           width="24"
           height="24"
         />Sicheng Hu</a
-      ><a href="/">Homepage</a>
+      >
+      <nav aria-label="Blog navigation"><a href="/">Homepage</a></nav>
+      <div class="reading-tools">
+        <a class="language-link" href="/blog/zh/" lang="zh-CN" hreflang="zh-CN">中文</a>
+        <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false" aria-label="Dark mode" title="Dark mode" hidden></button>
+      </div>
     </header>
     <main class="writing-index" id="main">
       <h1>Writing</h1>
       <article>
         <a class="index-entry" href="/blog/a-small-share/">
-          <img
-            src="/blog/a-small-share/occlusion.webp"
-            width="1500"
-            height="1000"
-            alt=""
-          />
+          <picture>
+            <source data-theme="dark" media="(prefers-color-scheme: dark)" srcset="/blog/a-small-share/occlusion-night.webp" />
+            <img
+              src="/blog/a-small-share/occlusion.webp"
+              width="1500"
+              height="1000"
+              alt=""
+            />
+          </picture>
           <div>
             <time class="dateline" datetime="2026-11-20"
               >November 20, 2026</time

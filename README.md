@@ -2,7 +2,7 @@
 
 Personal research homepage at **https://hsch22.github.io/**.
 
-An English-only personal desktop with a blog, a photo album, publications, research interests, scholarships and grants, and selected work. The static pages build with Node.js alone. The blog loads public GitHub comments when a reader reaches the discussion.
+An English personal homepage with a bilingual blog, a photo album, publications, research interests, scholarships and grants, and selected work. The static pages build with Node.js alone. The English and Simplified Chinese editions share each article’s GitHub comment thread.
 
 ## Develop
 
@@ -27,15 +27,15 @@ npm run check
 | ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
 | `content/profile.json`              | Profile links, publication metadata, BibTeX, and all seven honors                                                      |
 | `site/index.html`                   | Homepage structure and personal introduction                                                                           |
-| `site/blog/`                        | Writing index, articles, native MathML, illustrations, and the GitHub issue comment reader                              |
+| `site/blog/`                        | English writing, Chinese editions under `zh/`, native MathML, illustrations, and the shared comment reader                |
 | `site/styles.css`                   | Responsive desktop, dark/light themes, and reduced-motion rules                                                        |
-| `site/app.js`                       | Session introduction, Beijing clock, theme switch, keyboard search, dialogs, selected-work tabs, and copy-email action |
+| `site/app.js`                       | Session introduction, Beijing clock, keyboard search, dialogs, selected-work tabs, and copy-email action               |
 | `assets/`                           | Locally served images, fonts, licenses, and favicon                                                                    |
 | `docs/content-sources.md`           | Content and image provenance                                                                                           |
-| `magic/`                            | Existing standalone calculator, preserved without modifications                                                        |
+| `magic/`                            | Offline calculator and the shared appearance script, also published at `/theme.js`                                      |
 | `deployment/evophys/redirects.json` | Existing EvoPhys redirect routes                                                                                       |
 
-The full-screen introduction appears on the first visit in a browser session and can be reopened through the About controls. The Enter button or Escape key reveals the desktop. The default theme is dark, with translucent compact widgets and serif Newsreader headings; the theme button switches the current page to light.
+The full-screen introduction appears on the first visit in a browser session and can be reopened through the About controls. The Enter button or Escape key reveals the desktop. Pages follow the system appearance until a visitor chooses a theme. That choice carries across visits, tabs, both editions of the blog, the album, and the calculator. A short tap on the calculator’s mode button changes its appearance.
 
 Publication rows link directly to papers, with separate buttons opening full metadata, figures, and BibTeX dialogs. The honors widget previews three awards; its dialog contains all seven. Selected-work covers use the official WorldSimProbe visualization and Figure 2 from the CIFT paper. Selected-work tabs support Left/Right arrows, Home, and End. Search opens with Command/Control K, supports arrow-key navigation and Enter, and closes with Escape. Native modal dialogs contain keyboard focus and restore it when dismissed.
 

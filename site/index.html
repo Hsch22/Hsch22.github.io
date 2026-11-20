@@ -1,10 +1,12 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="color-scheme" content="dark light" />
-    <meta name="theme-color" content="#171a21" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" data-theme="light" content="#eeede8" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" data-theme="dark" content="#1b201f" media="(prefers-color-scheme: dark)" />
+    <script src="/theme.js"></script>
     <title>Sicheng Hu — World Models & Embodied AI</title>
     <meta
       name="description"
@@ -38,9 +40,9 @@
       type="font/ttf"
       crossorigin
     />
-    <link rel="stylesheet" href="/styles.css?v=phrases" />
+    <link rel="stylesheet" href="/styles.css?v=appearance" />
     <script src="/magic-entry.js"></script>
-    <script src="/app.js" defer></script>
+    <script src="/app.js?v=appearance" defer></script>
     <script type="application/ld+json">
       {{PERSON_JSON}}
     </script>
@@ -54,6 +56,7 @@
     </div>
     <main class="desktop-scene" id="main">
       <header class="desktop-header">
+        <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false" aria-label="Dark mode" title="Dark mode" hidden></button>
         <button
           class="identity-mark"
           data-about
@@ -152,7 +155,10 @@
               <span class="phrase">When a small share</span>
               <span class="phrase">is enough</span>
             </a>
-            <time datetime="2026-11-20">November 20, 2026</time>
+            <div class="writing-meta">
+              <time datetime="2026-11-20">November 20, 2026</time>
+              <a href="/blog/zh/a-small-share/" hreflang="zh-CN">Read in Chinese</a>
+            </div>
           </section>
         </div>
         <div class="desk-column">
@@ -251,14 +257,7 @@
         </div>
       </div>
       <footer class="desktop-footer">
-        <span>Sicheng Hu · Peking University</span
-        ><button
-          type="button"
-          class="theme-toggle"
-          aria-label="Switch to light theme"
-        >
-          Change atmosphere <span aria-hidden="true">◐</span>
-        </button>
+        <span>Sicheng Hu · Peking University</span>
       </footer>
     </main>
     <div class="command-dock">
@@ -298,6 +297,7 @@
               width="32"
               height="32"
             /><span>Sicheng Hu</span>
+            <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false" aria-label="Dark mode" title="Dark mode" hidden></button>
           </div>
           <h2 id="intro-title" tabindex="-1" autofocus>Hello, I'm Sicheng.</h2>
           <p>
