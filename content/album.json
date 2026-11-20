@@ -1,0 +1,8 @@
+{
+  "openingPair": ["open-country/02-red-roof", "autumn-light/03-two-shadows"],
+  "desktopPhoto": "open-country/04-road-at-dusk",
+  "collections": [
+    { "id": "open-country", "title": "Open country" },
+    { "id": "autumn-light", "title": "Autumn light" }
+  ]
+}

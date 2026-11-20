@@ -1,6 +1,7 @@
 import { readFile, writeFile, mkdir, rm, cp } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
+import { buildAlbum } from "./album.mjs";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const out = path.join(root, "dist");
@@ -110,7 +111,11 @@ const honors = profile.honors
       `<li><div>${h.year ? `<div class="honor-meta"><span>${escape(h.year)}</span></div>` : ""}<h3 class="honor-name">${escape(h.name)}</h3><p class="honor-institution">${escape(h.institution)}</p></div></li>`,
   )
   .join("\n");
+await rm(out, { recursive: true, force: true });
+await mkdir(out, { recursive: true });
+const album = await buildAlbum(root, out, escape);
 const replacements = {
+  ...album,
   NAME: escape(profile.name),
   AFFILIATION: escape(profile.affiliation),
   EMAIL: escape(profile.email),
@@ -137,18 +142,26 @@ const replacements = {
     knowsAbout: ["World models", "Embodied intelligence", "Robot learning"],
   }).replaceAll("<", "\\u003c"),
 };
-let html = await readFile(path.join(root, "site/index.html"), "utf8");
-html = html.replace(/\{\{([A-Z_]+)\}\}/g, (_, key) => {
-  if (!(key in replacements)) throw new Error(`Unknown template token: ${key}`);
-  return replacements[key];
-});
-await rm(out, { recursive: true, force: true });
-await mkdir(out, { recursive: true });
-await writeFile(path.join(out, "index.html"), html);
+async function renderPage(source, destination) {
+  const template = await readFile(path.join(root, "site", source), "utf8");
+  const html = template.replace(/\{\{([A-Z_]+)\}\}/g, (_, key) => {
+    if (!(key in replacements))
+      throw new Error(`Unknown template token: ${key}`);
+    return replacements[key];
+  });
+  await writeFile(path.join(out, destination), html);
+}
+await renderPage("index.html", "index.html");
+await renderPage("photos.html", "photos/index.html");
 await Promise.all(
-  ["styles.css", "app.js", "evophys-redirect.js", "magic-entry.js"].map(
-    (file) => cp(path.join(root, "site", file), path.join(out, file)),
-  ),
+  [
+    "styles.css",
+    "photos.css",
+    "app.js",
+    "photos.js",
+    "evophys-redirect.js",
+    "magic-entry.js",
+  ].map((file) => cp(path.join(root, "site", file), path.join(out, file))),
 );
 await cp(path.join(root, "site/retire-sw.js"), path.join(out, "sw.js"));
 await cp(path.join(root, "assets"), path.join(out, "assets"), {
@@ -186,12 +199,12 @@ for (const route of redirects.routes) {
 }
 await writeFile(
   path.join(out, "404.html"),
-  `<!doctype html><html lang="en" data-theme="dark"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Page not found — Sicheng Hu</title><link rel="icon" href="/assets/favicon.svg"><link rel="stylesheet" href="/styles.css"><script src="/evophys-redirect.js"></script></head><body class="error-page"><main><h1>Lost in space?</h1><p>This page doesn't exist. Let's get you back home.</p><a href="/">Back to Sicheng's space ↗</a></main></body></html>`,
+  `<!doctype html><html lang="en" data-theme="dark"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Page not found — Sicheng Hu</title><link rel="icon" href="/assets/favicon.svg?v=sun"><link rel="stylesheet" href="/styles.css"><script src="/evophys-redirect.js"></script></head><body class="error-page"><main><h1>Lost in space?</h1><p>This page doesn't exist. Let's get you back home.</p><a href="/">Back to Sicheng's space ↗</a></main></body></html>`,
 );
 await mkdir(path.join(out, "about"));
 await writeFile(
   path.join(out, "about/index.html"),
-  `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="refresh" content="0;url=/#about"><title>About Sicheng Hu</title><link rel="canonical" href="https://hsch22.github.io/#about"></head><body><a href="/#about">About Sicheng Hu</a></body></html>`,
+  `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="refresh" content="0;url=/#about"><title>About Sicheng Hu</title><link rel="icon" href="/assets/favicon.svg?v=sun"><link rel="canonical" href="https://hsch22.github.io/#about"></head><body><a href="/#about">About Sicheng Hu</a></body></html>`,
 );
 await writeFile(path.join(out, ".nojekyll"), "");
 await writeFile(
@@ -200,8 +213,8 @@ await writeFile(
 );
 await writeFile(
   path.join(out, "sitemap.xml"),
-  `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://hsch22.github.io/</loc><lastmod>${escape(profile.updated)}</lastmod></url></urlset>`,
+  `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://hsch22.github.io/</loc><lastmod>${escape(profile.updated)}</lastmod></url><url><loc>https://hsch22.github.io/photos/</loc></url></urlset>`,
 );
 console.log(
-  `Built dist/: ${profile.publications.length} publications, ${profile.honors.length} honors, ${redirects.routes.length} preserved EvoPhys redirects, and Magic.`,
+  `Built dist/: ${profile.publications.length} publications, ${profile.honors.length} honors, ${album.PHOTO_COUNT} photographs, ${redirects.routes.length} preserved EvoPhys redirects, and Magic.`,
 );

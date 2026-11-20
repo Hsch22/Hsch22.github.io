@@ -9,7 +9,8 @@
   },
   "scripts": {
     "build": "node scripts/build.mjs",
-    "check": "node scripts/check.mjs && node --check site/app.js && node --check site/retire-sw.js",
-    "start": "node scripts/build.mjs && node scripts/serve.mjs"
+    "check": "node scripts/check.mjs && node --check site/app.js && node --check site/photos.js && node --check site/retire-sw.js",
+    "start": "node scripts/build.mjs && node scripts/serve.mjs",
+    "photo:add": "node scripts/add-photo.mjs"
   }
 }

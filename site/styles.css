@@ -811,12 +811,78 @@ pre {
   animation: intro-in 0.8s ease-out;
 }
 .intro-content {
-  width: 560px;
-  max-width: calc(100% - 64px);
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.1fr);
+  grid-template-areas: "copy photographs" "actions photographs";
+  align-items: center;
+  gap: 25px clamp(44px, 7vw, 102px);
+  width: min(1080px, 88%);
   margin: auto;
-  padding: 60px 0 66px;
+  padding: 58px 0;
   position: relative;
   z-index: 1;
+}
+.intro-copy {
+  grid-area: copy;
+}
+.intro-album {
+  display: block;
+  grid-area: photographs;
+  min-width: 0;
+}
+.intro-prints {
+  display: grid;
+  grid-template-columns: 1.28fr 1fr;
+  align-items: start;
+  gap: clamp(8px, 1.1vw, 16px);
+}
+.intro-prints img {
+  width: 100%;
+  height: auto;
+  box-shadow: 0 10px 24px #07080c38;
+}
+.intro-prints img:first-child {
+  margin-top: clamp(24px, 4vw, 56px);
+}
+.desktop-album {
+  display: block;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 15px;
+}
+.desktop-album img {
+  width: 100%;
+  height: auto;
+}
+@keyframes photo-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .intro[open] .intro-prints img {
+    animation: photo-arrive 850ms cubic-bezier(0.18, 0.74, 0.24, 1) 80ms
+      backwards;
+  }
+  .intro[open] .intro-prints img + img {
+    animation-delay: 210ms;
+  }
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .desktop-album,
+  .intro-prints {
+    transition: transform 350ms ease-out;
+  }
+  .desktop-album:hover,
+  .intro-album:hover .intro-prints {
+    transform: translateY(-3px);
+  }
 }
 .intro-kicker {
   display: flex;
@@ -834,20 +900,20 @@ pre {
   filter: saturate(0.6);
 }
 .intro h2 {
-  font: 400 39px/1.1 var(--serif);
+  font: 400 clamp(38px, 4.25vw, 52px)/1.08 var(--serif);
   letter-spacing: -0.6px;
   color: #eeeeef;
   margin-bottom: 27px;
 }
 .intro p {
-  font-size: 13px;
-  line-height: 1.95;
+  font-size: 15px;
+  line-height: 1.75;
   color: #c3c4cf;
   margin-bottom: 19px;
   letter-spacing: 0.02px;
 }
 .intro p:first-of-type {
-  font-size: 16px;
+  font-size: 18px;
   line-height: 1.7;
   color: #d4d4de;
   margin-bottom: 23px;
@@ -865,15 +931,11 @@ pre {
 .intro p a:hover {
   border-color: #dedeee;
 }
-.intro p.intro-postscript {
-  font-family: var(--serif);
-  font-size: 17px;
-  line-height: 1.5;
-  color: #9d9fad;
-  margin-top: 25px;
-  margin-bottom: 30px;
+.intro-copy p:last-child {
+  margin-bottom: 0;
 }
 .intro-actions {
+  grid-area: actions;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -907,8 +969,8 @@ pre {
 }
 .intro-social {
   display: flex;
-  gap: 21px;
-  font-size: 10px;
+  gap: 16px;
+  font-size: 12px;
   color: #9295a5;
 }
 .intro-social a:hover {
@@ -1196,40 +1258,47 @@ body:has(.intro[open]) .command-dock {
     flex-shrink: 0;
   }
   .intro-content {
-    max-width: calc(100% - 56px);
-    padding: 50px 0;
+    width: min(520px, calc(100% - 48px));
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "copy" "photographs" "actions";
+    gap: 24px;
+    padding: 36px 0;
   }
   .intro-kicker {
-    margin-bottom: 30px;
+    margin-bottom: 19px;
   }
   .intro h2 {
-    font-size: 34px;
-    margin-bottom: 25px;
+    font-size: 38px;
+    margin-bottom: 16px;
   }
   .intro p {
-    font-size: 13px;
-    line-height: 1.85;
+    font-size: 15px;
+    line-height: 1.65;
+    margin-bottom: 14px;
   }
   .intro p:first-of-type {
-    font-size: 16px;
+    font-size: 17px;
+    margin-bottom: 14px;
   }
-  .intro p.intro-postscript {
-    font-size: 16px;
+  .intro-prints {
+    grid-template-columns: 1.28fr 1fr;
+    gap: 10px;
+  }
+  .intro-prints img:first-child {
+    margin-top: 18px;
   }
   .intro-actions {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 24px;
+    flex-wrap: wrap;
+    row-gap: 14px;
+  }
+  .intro-actions .enter-button {
+    gap: 12px;
   }
   .intro-social {
-    gap: 26px;
+    gap: 12px;
   }
   .intro[open] {
     align-items: flex-start;
-  }
-  .intro-content {
-    margin-top: auto;
-    margin-bottom: auto;
   }
   .edge-light:before {
     opacity: 0.25;
