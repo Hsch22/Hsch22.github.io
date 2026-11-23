@@ -4,20 +4,12 @@ const status = comments.querySelector("#comment-status");
 const more = comments.querySelector("#more-comments");
 const thread = `https://github.com/Hsch22/Hsch22.github.io/issues/${comments.dataset.issue}`;
 const endpoint = `https://api.github.com/repos/Hsch22/Hsch22.github.io/issues/${comments.dataset.issue}/comments`;
-const locale = document.documentElement.lang;
-const dates = new Intl.DateTimeFormat(locale, { dateStyle: "medium" });
+const dates = new Intl.DateTimeFormat("en", { dateStyle: "medium" });
 const messages = {
-  en: {
-    deleted: "Deleted account", loading: "Loading comments…", more: "Load more comments",
-    empty: "Be the first to leave a comment.", retry: "Try again",
-    error: "Comments could not be loaded. You can read the thread on GitHub.",
-  },
-  "zh-CN": {
-    deleted: "已注销的账号", loading: "正在加载评论…", more: "加载更多评论",
-    empty: "还没有人留言。", retry: "重试",
-    error: "评论暂时加载不出来，可以到 GitHub 查看。",
-  },
-}[locale];
+  deleted: "Deleted account", loading: "Loading comments…", more: "Load more comments",
+  empty: "Be the first to leave a comment.", retry: "Try again",
+  error: "Comments could not be loaded. You can read the thread on GitHub.",
+};
 const shown = new Set();
 let page = 1;
 

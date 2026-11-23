@@ -213,7 +213,7 @@ await writeFile(
 );
 await writeFile(
   path.join(out, "sitemap.xml"),
-  `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://hsch22.github.io/</loc><lastmod>${escape(profile.updated)}</lastmod></url>${["/photos/", "/blog/", "/blog/zh/", "/blog/a-small-share/", "/blog/zh/a-small-share/"].map(route => `<url><loc>https://hsch22.github.io${route}</loc></url>`).join("")}</urlset>`,
+  `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://hsch22.github.io/</loc><lastmod>${escape(profile.updated)}</lastmod></url>${["/photos/", "/blog/", "/blog/a-small-share/"].map(route => `<url><loc>https://hsch22.github.io${route}</loc></url>`).join("")}</urlset>`,
 );
 console.log(
   `Built dist/: ${profile.publications.length} publications, ${profile.honors.length} honors, ${album.PHOTO_COUNT} photographs, ${redirects.routes.length} preserved EvoPhys redirects, and Magic.`,

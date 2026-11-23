@@ -9,7 +9,7 @@
   },
   "scripts": {
     "build": "node scripts/build.mjs",
-    "check": "node scripts/check.mjs && node --check site/app.js && node --check site/photos.js && node --check site/blog/a-small-share/coverage.js && node --check site/blog/comments.js && node --check site/blog/reading.js && node --check magic/theme.js && node --check magic/app.js && node --check magic/sw.js && node --check site/retire-sw.js",
+    "check": "node scripts/check.mjs && node --check site/app.js && node --check site/photos.js && node --check site/blog/a-small-share/coverage.js && node --check site/blog/comments.js && node --check magic/theme.js && node --check magic/app.js && node --check magic/sw.js && node --check site/retire-sw.js",
     "start": "node scripts/build.mjs && node scripts/serve.mjs",
     "photo:add": "node scripts/add-photo.mjs"
   }
