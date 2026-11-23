@@ -46,10 +46,6 @@
 .reading-tools {
   gap: 6px;
 }
-.language-link {
-  padding: 7px 4px;
-  white-space: nowrap;
-}
 .reading-nav a,
 .reading-footer a {
   font-size: 0.94rem;
@@ -471,26 +467,6 @@
   }
 }
 
-/* Keep Latin research terms and Chinese punctuation on the same reading line. */
-:lang(zh-CN).reading-page {
-  --serif: Newsreader, "Songti SC", "Noto Serif CJK SC", SimSun, serif;
-  --sans: Manrope, "PingFang SC", "Microsoft YaHei", sans-serif;
-  line-break: strict;
-}
-:lang(zh-CN) .hero-copy h1 {
-  font-size: clamp(2rem, 11cqi, 3.9rem);
-}
-:lang(zh-CN) :is(.hero-copy h1, .index-entry h2, .essay-prose h2) {
-  line-height: 1.23;
-  letter-spacing: -0.025em;
-}
-:lang(zh-CN) .standfirst {
-  line-height: 1.75;
-}
-:lang(zh-CN) .essay-prose {
-  font-size: clamp(1.08rem, 1.45vw, 1.2rem);
-  line-height: 1.86;
-}
 @media (max-width: 510px) {
   .reading-nav {
     grid-template-columns: 1fr auto;

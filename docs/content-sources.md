@@ -13,7 +13,7 @@ Verified on November 15, 2026. This file is not included in the published websit
 - **Newsreader:** [Google Fonts catalog](https://fonts.google.com/specimen/Newsreader) and [Google Fonts source](https://github.com/google/fonts/tree/main/ofl/newsreader). The serif typeface is served locally as `assets/newsreader.ttf`, with its SIL OFL license in `assets/NEWSREADER-OFL.txt`.
 - **Design reference:** [hux.pro](https://hux.pro/). The owner explicitly confirmed this reference after rejecting the first redesign. The revised design follows its full-screen introduction, serif typography, restrained edge lighting, and compact personal-desktop composition. Dark translucent widgets, direct paper links with metadata and citation dialogs, selected-work tabs, and a complete seven-award dialog are independently implemented for this profile. No reference-site text, code, personal photographs, weather, or music data is copied.
 
-The personal homepage is in English. The blog also has a Simplified Chinese edition that keeps research terms in English. The public profile uses its canonical link.
+The personal homepage and blog are in English. The public profile uses its canonical link.
 
 The eight photographs added to the camera roll on November 20, 2026 came from the owner’s HEIC files. The published WebP copies retain each original composition. Screen-reader descriptions are based on the images. Camera and location metadata are stripped on export.
 
