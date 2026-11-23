@@ -159,6 +159,72 @@
 .essay-prose p + p {
   margin-top: 16px;
 }
+.essay-prose strong {
+  font-weight: 600;
+}
+.essay-prose .section-thesis,
+.essay-prose .section-bridge {
+  font-weight: 560;
+  color: var(--fg);
+}
+.essay-prose .section-bridge {
+  margin-top: 22px;
+}
+.essay-prose .key-list,
+.essay-prose .summary-list {
+  margin: 16px 0;
+  padding-left: 1.35em;
+}
+.essay-prose .key-list {
+  list-style: disc;
+}
+.essay-prose .summary-list {
+  list-style: decimal;
+}
+.essay-prose .key-list li + li,
+.essay-prose .summary-list li + li {
+  margin-top: 11px;
+}
+.essay-prose .key-list + p,
+.essay-prose .summary-list + p {
+  margin-top: 16px;
+}
+.essay-prose .cite {
+  color: var(--link);
+  font: 550 0.84em/1 var(--sans);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.essay-prose .cite:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.essay-prose .references-list {
+  margin-top: 18px;
+  padding-left: 1.55em;
+  list-style: decimal;
+  font: 400 0.93rem/1.6 var(--sans);
+  color: var(--muted);
+}
+.essay-prose .references-list li {
+  scroll-margin-top: 28px;
+}
+.essay-prose .references-list li + li {
+  margin-top: 10px;
+}
+.essay-prose .references-list em {
+  font-style: italic;
+}
+.essay-prose .references-list .source {
+  font-size: 0.87rem;
+  margin-inline-start: 4px;
+}
+.essay-prose figcaption strong,
+.replay-table caption strong {
+  color: var(--fg);
+  font-weight: 650;
+  margin-inline-end: 0.45em;
+}
 .essay-prose sub,
 .essay-prose sup {
   font-size: 0.68em;

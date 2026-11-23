@@ -19,7 +19,7 @@ function showAllocation() {
   const count = input.valueAsNumber;
   const remaining = Number(input.max) - count;
   specialist.textContent = `${count} specialist ${count === 1 ? "clip" : "clips"}`;
-  broad.textContent = `${remaining} ordinary ${remaining === 1 ? "clip" : "clips"}`;
+  broad.textContent = `${remaining} general ${remaining === 1 ? "clip" : "clips"}`;
   input.setAttribute(
     "aria-valuetext",
     [specialist.textContent, broad.textContent].join(", "),

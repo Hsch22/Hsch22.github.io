@@ -10,7 +10,7 @@
     <title>When a small share is enough — Sicheng Hu</title>
     <meta
       name="description"
-      content="How much specialist data earns a place in a training mix? An illustrated essay on coverage, replay, and what the next training step buys."
+      content="Why a small share of specialist data can already improve world-model rollout capability, analyzed through event coverage, replay retention, gradient opportunity cost, and compounding error."
     />
     <link rel="canonical" href="https://hsch22.github.io/blog/a-small-share/" />
     <link rel="alternate" hreflang="en" href="https://hsch22.github.io/blog/a-small-share/" />
@@ -20,7 +20,7 @@
     <meta property="og:title" content="When a small share is enough" />
     <meta
       property="og:description"
-      content="A world-model experiment, a replay result, and a way to decide where the next training step belongs."
+      content="Analyzing specialist data allocation in fixed-budget world-model training through coverage, replay retention, gradient opportunity cost, and rollout compounding."
     />
     <meta
       property="og:url"
@@ -49,8 +49,8 @@
       crossorigin
     />
     <link rel="stylesheet" href="/styles.css?v=appearance" />
-    <link rel="stylesheet" href="/blog/reading.css?v=english" />
-    <script src="/blog/a-small-share/coverage.js?v=english" defer></script>
+    <link rel="stylesheet" href="/blog/reading.css?v=style2" />
+    <script src="/blog/a-small-share/coverage.js?v=style2" defer></script>
     <script src="/blog/comments.js?v=english" defer></script>
   </head>
   <body class="reading-page">
@@ -84,11 +84,17 @@
             </h1>
             <div class="standfirst">
               <p>
-                <span class="phrase">The smallest share we tried</span>
-                <span class="phrase">already improved <span class="phrase">object persistence.</span></span>
+                <span class="phrase">In fixed-budget world-model training,</span>
+                <span class="phrase">a small share of specialist footage</span>
+                <span class="phrase">can already lift object persistence,</span>
+                <span class="phrase">while larger allocations mainly lower</span>
+                <span class="phrase">one-step prediction error.</span>
               </p>
-              <p>More footage <span class="phrase">kept lowering prediction error.</span></p>
-              <p>Which result <span class="phrase">should decide the training mix?</span></p>
+              <p>
+                <span class="phrase">Setting the mixture requires separating</span>
+                <span class="phrase">coverage, retention, and opportunity cost</span>
+                <span class="phrase">from single-step loss.</span>
+              </p>
             </div>
             <p class="byline">Sicheng Hu</p>
           </div>
@@ -106,36 +112,67 @@
         </header>
         <div class="essay-layout">
           <aside class="contents">
-            <nav aria-label="In this essay">
-              <p>In this essay</p>
-              <a href="#comparison">Two ways to improve</a>
-              <a href="#coverage">The first few clips</a>
-              <a href="#replay">A little rehearsal</a>
-              <a href="#exchange">Who gives up a step?</a>
-              <a href="#rollout">Watch the ball come back</a>
+            <nav aria-label="Contents">
+              <p>Contents</p>
+              <a href="#introduction">Introduction</a>
+              <a href="#coverage">Event coverage</a>
+              <a href="#replay">Replay and retention</a>
+              <a href="#exchange">Gradient opportunity cost</a>
+              <a href="#rollout">Rollout compounding</a>
+              <a href="#conclusion">Conclusion</a>
+              <a href="#references">References</a>
             </nav>
           </aside>
           <div class="essay-prose">
-            <section id="comparison">
-              <h2>Two ways <span class="phrase">to improve</span></h2>
+            <section id="introduction">
+              <h2>Introduction</h2>
               <p>
-                Roll a red ball behind a screen. For a moment, the right
-                prediction is an empty stretch of tabletop. The interesting
-                frame comes later. Does the same ball come out on the other
-                side?
+                Training a world model under a fixed compute or data budget
+                requires combining broad scene distributions with specialist
+                interaction footage. Increasing a specialist source’s mixture
+                weight reliably lowers prediction error on held-out clips from
+                that source, but physical reasoning in closed-loop rollouts does
+                not necessarily scale with it. World-model training therefore
+                faces a core data-composition problem: how much specialist data
+                earns its share of a fixed update budget when single-step loss
+                and rollout capability diverge.
               </p>
               <p>
-                That distinction changed how I read a set of video-model
-                experiments. The runs began from the same weights and had the
-                same budget of training footage.
+                Occlusion makes this divergence concrete. Consider a ball
+                rolling behind a screen: while the ball is hidden, predicting an
+                empty tabletop minimizes single-frame error even if the model
+                has lost track of the object. Whether the model preserves object
+                identity only becomes observable several steps later, when the
+                same ball must re-emerge on the opposite side. In this post, we
+                distinguish two evaluation regimes that respond differently to
+                data composition:
               </p>
+              <ul class="key-list">
+                <li>
+                  <strong>One-step prediction error.</strong> Measures how
+                  accurately the model predicts the next observation conditioned
+                  on ground-truth context from a held-out source. Expanding a
+                  specialist source’s share increases direct gradient exposure
+                  to that distribution and typically drives this error down.
+                </li>
+                <li>
+                  <strong>Closed-loop rollout capability.</strong> Measures
+                  whether the model preserves physical invariants—such as
+                  contact interactions and object persistence—when rolling
+                  forward over multiple steps. Sustaining this capability
+                  requires exposing the model to the target transitions without
+                  eroding the general scene dynamics learned from broad data.
+                </li>
+              </ul>
               <p>
-                In one comparison, the smallest tested allotment of a source
-                rich in physical interactions already improved interaction and
-                object persistence over the starting model.
-                A larger allotment drove down the error on fresh clips from
-                that source. The two rollout scores barely moved beyond their
-                earlier gains.
+                This separation appears directly in controlled video-model
+                comparisons initialized from the same weights under a matched
+                training budget. Relative to the base checkpoint, the smallest
+                tested allocation of an interaction-rich source already improved
+                both interaction and object-persistence scores. Assigning a
+                larger allocation continued to lower prediction error on fresh
+                clips from that source, whereas the two rollout scores remained
+                largely level beyond their initial gains (Figure 1).
               </p>
               <figure class="comparison-figure">
                 <picture>
@@ -150,40 +187,75 @@
                     width="1200"
                     height="504"
                     loading="lazy"
-                    alt="Across the smaller and larger tested shares, one-step error falls while interaction and object-persistence scores stay approximately level."
+                    alt="Across the smaller and larger tested shares, one-step prediction error falls while interaction and object-persistence scores stay approximately level."
                   />
                 </picture>
                 <figcaption>
-                  Two readouts from the same change in mixture. This qualitative
-                  redraw shows the directions observed in the video comparison.
-                  Heights and distances are illustrative.
+                  <strong>Figure 1</strong> Qualitative response of one-step
+                  prediction error and rollout interaction and persistence
+                  scores across smaller and larger specialist shares under a
+                  fixed training budget. Heights and slopes are schematic and
+                  illustrate the directional divergence observed in the video
+                  comparison rather than raw metric values.
                 </figcaption>
               </figure>
               <p>
-                I would keep a small allocation for that source. It supplies
-                examples of the behavior I care about. To give it more, I would
-                want a new reason, such as a harder interaction the model still
-                gets wrong. Better predictions of familiar footage answer a
-                different question.
+                Under these dynamics, a small specialist allocation is justified
+                because it supplies direct evidence of the target physical
+                behavior; raising that allocation further requires an additional
+                failure mode that extra exposure can actually resolve, rather
+                than lower one-step error on familiar clips. In this post, we
+                analyze why a small share is often sufficient and organize the
+                trade-off around three mechanisms:
               </p>
+              <ul class="key-list">
+                <li>
+                  <strong>Event coverage.</strong> Under a finite budget,
+                  encounter probability follows diminishing returns: common
+                  transitions saturate after a few clips while rarer
+                  multi-object interactions remain under-covered.
+                </li>
+                <li>
+                  <strong>Replay and retention.</strong> Public
+                  continual-pretraining studies show that a small replay share
+                  recovers most prior-domain performance without stalling
+                  adaptation, turning mixture selection into an explicit
+                  retention target.
+                </li>
+                <li>
+                  <strong>Gradient opportunity cost.</strong> Because every
+                  specialist update displaces a general-domain update, the net
+                  change on a target loss depends on the difference in gradient
+                  alignment between the added and displaced sources.
+                </li>
+              </ul>
             </section>
             <section id="coverage">
-              <h2>The first few clips</h2>
-              <p>
-                Imagine a budget of 36 clips. You can fill some slots with
-                specialist footage and the rest with ordinary scenes. In this
-                toy example, only specialist clips contain the events of
-                interest. A simple crossing appears in one out of four
-                specialist clips on average. A harder crossing involving two
-                objects appears in one out of sixteen.
+              <h2><span class="phrase">Event coverage</span></h2>
+              <p class="section-thesis">
+                Under a fixed data budget, the first few specialist clips
+                produce the steepest increase in the probability of encountering
+                a target physical transition, whereas subsequent slots yield
+                sharply diminishing coverage gains.
               </p>
               <p>
-                Give the specialist <var>s</var> slots. If each independent draw
-                contains a particular event with probability <var>r</var>, the
-                chance of missing it every time is
+                Consider an analytical toy model with a fixed budget of 36
+                clips, partitioned between specialist footage and general-domain
+                scenes. Assume that only specialist clips contain the target
+                events: a simple single-object crossing occurs in one out of
+                four specialist clips on average (<span class="inline-math"><var>r</var> = 1/4</span>),
+                while a rarer two-object crossing occurs in one out of sixteen
+                (<span class="inline-math"><var>r</var> = 1/16</span>).
+              </p>
+              <p>
+                Allocate <var>s</var> slots to the specialist source. If each
+                independent draw contains a given transition with probability
+                <var>r</var>, the probability of missing it across all
+                <var>s</var> draws is
                 <span class="inline-math"
                   >(1 − <var>r</var>)<sup><var>s</var></sup></span
-                >. Its chance of showing up at least once is therefore
+                >. The probability of encountering the event at least once in
+                the budget is therefore
               </p>
               <div class="equation">
                 <math
@@ -207,11 +279,11 @@
                 id="coverage-demo"
                 aria-labelledby="coverage-heading"
               >
-                <h3 id="coverage-heading">Give the specialist <span class="phrase">a share</span></h3>
+                <h3 id="coverage-heading"><span class="phrase">Coverage under</span> <span class="phrase">a fixed budget</span></h3>
                 <p class="demo-budget">
                   <strong id="specialist-count">8 specialist clips</strong
                   ><span aria-hidden="true"> / </span
-                  ><span id="broad-count">28 ordinary clips</span>
+                  ><span id="broad-count">28 general clips</span>
                 </p>
                 <div class="slider-control" hidden>
                   <label for="clip-count">Specialist clips out of 36</label>
@@ -225,7 +297,7 @@
                   />
                 </div>
                 <div class="probability-row">
-                  <span>Simple crossing</span
+                  <span>Simple crossing (<var>r</var> = 1/4)</span
                   ><strong id="common-value">90.0%</strong
                   ><meter
                     id="common-meter"
@@ -236,7 +308,7 @@
                   ></meter>
                 </div>
                 <div class="probability-row rare">
-                  <span>Two-object crossing</span
+                  <span>Two-object crossing (<var>r</var> = 1/16)</span
                   ><strong id="rare-value">40.3%</strong
                   ><meter
                     id="rare-meter"
@@ -247,50 +319,72 @@
                   ></meter>
                 </div>
                 <figcaption>
-                  Each bar gives the chance of seeing that event at least once
-                  in the whole budget. The frequencies here belong to the toy
-                  example.
+                  <strong>Figure 2</strong> Encounter probability
+                  <span class="inline-math"><var>C</var>(<var>s</var>)</span>
+                  for two event frequencies across a 36-clip budget. Each bar
+                  gives the probability of observing the transition at least
+                  once; the event rates belong to this toy model rather than
+                  empirical dataset counts.
                 </figcaption>
               </figure>
               <p>
-                With eight specialist clips, the common event already has about
-                a nine-in-ten chance of appearing. The next clip raises that
-                chance by only 2.5 percentage points. For the rarer event it
-                adds about 3.7 points. The very same clip slot has different
-                value for two behaviors. These are chances to learn. Whether the
-                model makes use of them is something we can check in a rollout.
+                At <span class="inline-math"><var>s</var> = 8</span> specialist
+                clips, the simple crossing already reaches a 90.0% encounter
+                probability, and adding a ninth slot raises that probability by
+                only 2.5 percentage points (Figure 2). For the rarer two-object
+                crossing, encounter probability stands at 40.3%, and the same
+                ninth slot adds approximately 3.7 percentage points. A single
+                additional slot therefore carries different marginal value
+                across behaviors. Note that
+                <span class="inline-math"><var>C</var>(<var>s</var>)</span>
+                captures exposure opportunity rather than guaranteed mastery;
+                whether the model converts exposure into reliable dynamics must
+                still be verified in rollout.
               </p>
               <p>
-                This also changes what I would collect. Replaying a familiar
-                clip gives the model another update on it. Adding a recording of
-                an encounter missing from the pool gives the model its first
-                chance to see it. In a run log, I want to see both the number of
-                distinct recordings and the fraction of updates they receive.
+                This distinction also separates data collection from data
+                reweighting. Upsampling a familiar clip grants the model another
+                gradient update on an already-covered transition, whereas adding
+                a recording of an unrepresented interaction supplies the model’s
+                first exposure to that regime. Run logs should consequently
+                report both the count of distinct recordings per source and the
+                fraction of optimizer updates those recordings receive.
+              </p>
+              <p class="section-bridge">
+                Event coverage explains why the earliest specialist slots yield
+                the steepest gains when acquiring a target behavior. A parallel
+                small-share effect governs the complementary regime: preserving
+                an existing capability while continuing training on a new
+                distribution.
               </p>
             </section>
             <section id="replay">
-              <h2>A little rehearsal</h2>
+              <h2><span class="phrase">Replay</span> and <span class="phrase">retention</span></h2>
+              <p class="section-thesis">
+                In continual pretraining, retaining a small replay share from
+                the original distribution recovers most of the forgotten
+                performance while leaving adaptation on the new distribution
+                intact.
+              </p>
               <p>
-                A small share can also serve a skill the model already has.
-                Ibrahim and colleagues took a language model with 10 billion
-                parameters, trained on the Pile, and continued training it on
-                SlimPajama. They spent the same number of tokens in two runs. In
-                one, five tokens out of every hundred came from the old source.
-                <a
-                  class="source"
-                  href="https://openreview.net/pdf?id=DimPeeCxKO"
-                  >Ibrahim et al., Table 4</a
-                >
+                Public continual-pretraining benchmarks quantify this effect
+                directly. Ibrahim et al. continued training a 10B-parameter
+                language model originally trained on the Pile using SlimPajama
+                under a matched token budget, comparing 0% replay against a 5%
+                replay share drawn from the old source
+                <a class="cite" href="#ref-1">[1]</a> (Table 1).
               </p>
               <table class="replay-table">
                 <caption>
-                  Final validation loss in the public replay experiment
+                  <strong>Table 1</strong> Final validation loss in the 10B
+                  continual-pretraining replay comparison (Ibrahim et al., Table
+                  4 <a class="cite" href="#ref-1">[1]</a>).
                 </caption>
                 <thead>
                   <tr>
                     <th scope="col">Old-source share</th>
-                    <th scope="col">Old source</th>
-                    <th scope="col">New source</th>
+                    <th scope="col">Old-source loss</th>
+                    <th scope="col">New-source loss</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -307,47 +401,60 @@
                 </tbody>
               </table>
               <p>
-                The old-source loss had been 1.75 before the switch. A small
-                amount of rehearsal recovered about four fifths of the rise from
-                1.75 to 1.98, while new-source loss was the same at the reported
-                precision. That gives “enough” a concrete meaning once you
-                specify how much of the old performance you want to retain.
+                Before the distribution switch, old-source validation loss stood
+                at 1.75. Without replay, old-source loss rose to 1.98; mixing in
+                5% old-source tokens brought it back to 1.79—recovering roughly
+                four-fifths of the increase—while new-source loss remained
+                unchanged at 2.00 to the reported precision. Once a retention
+                threshold is specified, “enough” ceases to be qualitative and
+                becomes a concrete target on the retention–adaptation trade-off.
               </p>
               <p>
-                Ye and colleagues turned that reasoning into an experiment. They
-                fitted validation loss as a function of mixture weights. When
-                continuing a language model on Python code and its original text
-                distribution, they used the fitted curves to predict the share
-                that would maintain the original text loss. The retention target
-                gave them a way to choose a point on the curve.
-                <a
-                  class="source"
-                  href="https://proceedings.iclr.cc/paper_files/paper/2025/file/cc84bfabe6389d8883fc2071c848f62a-Paper-Conference.pdf"
-                  >Ye et al., Fig. 10</a
-                >
+                Ye et al. turn this relationship into a predictive selection
+                rule through empirical data mixing laws, fitting validation loss
+                as a function of mixture weights
+                <a class="cite" href="#ref-2">[2]</a>. When continuing a
+                language model on Python code alongside its original text
+                distribution, they use the fitted curves to predict the minimum
+                original-text share required to maintain baseline text loss.
+                Specifying the retention target directly determines the
+                operating point on the curve.
+              </p>
+              <p class="section-bridge">
+                Replay experiments establish that a small share can satisfy a
+                defined retention target on its own domain. Under a fixed
+                training budget, however, evaluating a mixture requires
+                accounting not only for what the added source contributes, but
+                also for what the displaced source forfeits.
               </p>
             </section>
             <section id="exchange">
-              <h2>Who <span class="phrase">gives up</span> <span class="phrase">a step?</span></h2>
-              <p>
-                A ratio needs a unit. Suppose a long-video batch fits two clips
-                and a short-video batch fits six. If batches alternate, the long
-                videos get half the optimizer updates and a quarter of the
-                clips. An inventory of files gives a third number. For a trainer
-                that draws one source per update, I count how many updates each
-                source actually got.
+              <h2><span class="phrase">Gradient</span> <span class="phrase">opportunity cost</span></h2>
+              <p class="section-thesis">
+                Under a fixed update budget, raising one source’s mixture weight
+                displaces optimizer steps from another, so the net effect on a
+                target loss depends on the difference between the two sources’
+                gradient alignment rather than on the specialist source alone.
               </p>
               <p>
-                Now take one small gradient step. Write <var>g</var
-                ><sub>S</sub> for the mean gradient from specialist data,
-                <var>g</var><sub>B</sub> for the broad data that would give up
-                some of its share, and <var>g</var><sub>T</sub> for the gradient
-                of a target loss.
+                Evaluating that trade-off first requires an unambiguous unit for
+                mixture shares. Suppose a long-video batch fits two clips while
+                a short-video batch fits six. Alternating between those batches
+                gives long videos 50% of optimizer updates and 25% of sampled
+                clips, while raw file inventory yields a third number. For a
+                trainer that draws one source per step, the relevant accounting
+                unit is the fraction of optimizer updates each source actually
+                receives.
               </p>
               <p>
-                Move a fraction <var>δ</var> of the sampling probability from
-                broad to specialist. To first order, the change in target loss
-                relative to the original update is
+                Now consider a single small gradient step with learning rate
+                <var>η</var>. Let <var>g</var><sub>S</sub> denote the mean
+                gradient from specialist data, <var>g</var><sub>B</sub> the mean
+                gradient from the broad-domain data giving up share, and
+                <var>g</var><sub>T</sub> the gradient of a target evaluation
+                loss. Shifting a sampling-probability mass <var>δ</var> from
+                broad to specialist data changes the target loss, to first order
+                relative to the original update, by
               </p>
               <div class="equation">
                 <math
@@ -365,58 +472,184 @@
                 >
               </div>
               <p>
-                Here <var>η</var> is the learning rate. The inner product asks
-                how much of each update points in a direction that reduces the
-                target loss. Even a helpful specialist update can be a poor
-                trade if the displaced update would have helped more. Fan and
-                colleagues use gradient alignment with target domains to learn
-                sampling weights in DoGE. The subtraction above makes the cost
-                of a particular swap explicit.
-                <a
-                  class="source"
-                  href="https://proceedings.mlr.press/v235/fan24e.html"
-                  >Fan et al., §2</a
-                >
+                The inner product measures how strongly each update aligns with
+                a descent direction for the target loss. Even a specialist
+                update with positive alignment (<span class="inline-math">⟨<var>g</var><sub>T</sub>, <var>g</var><sub>S</sub>⟩ &gt; 0</span>)
+                is a net loss if the displaced broad-domain update aligned more
+                strongly. Fan et al. use gradient alignment with target domains
+                to learn domain sampling weights in DoGE
+                <a class="cite" href="#ref-3">[3]</a>; writing the reallocation
+                explicitly as
+                <span class="inline-math"><var>g</var><sub>S</sub> − <var>g</var><sub>B</sub></span>
+                makes the opportunity cost of a specific swap transparent.
               </p>
               <p>
-                In the video runs, some collections of real scenes also made
-                other real scenes easier to predict. The specialist interaction
-                footage showed little of that transfer to those collections.
-                Taking a step away from a broadly useful source can therefore
-                cost something on a third source whose own share never changed.
+                In video world-model runs, this indirect cost shows up across
+                domains that were never touched directly. Certain collections of
+                general real-world scenes transfer positively to other real
+                scenes, reducing prediction error outside their own subset.
+                Specialist interaction footage exhibits much weaker transfer to
+                those broad collections. Reallocating updates away from a
+                broadly transferable source can therefore degrade a third domain
+                whose nominal mixture weight never changed.
+              </p>
+              <p class="section-bridge">
+                First-order gradient alignment explains why over-allocating
+                specialist data can erode general scene dynamics. Even when two
+                mixtures yield nearly identical single-step losses, however,
+                their predictions can still separate once states are fed back
+                into the model over multi-step rollouts.
               </p>
             </section>
             <section id="rollout">
-              <h2><span class="phrase">Watch the ball</span> <span class="phrase">come back</span></h2>
-              <p>
-                In another video comparison, single-step error barely separated
-                two mixtures. Short memory probes also looked much the same. The
-                difference showed up when the model had to carry information
-                across longer sequences.
+              <h2><span class="phrase">Rollout</span> <span class="phrase">compounding</span></h2>
+              <p class="section-thesis">
+                Because autoregressive world models condition each step on their
+                own prior outputs, small errors compound across time—making
+                multi-step rollout evaluation essential for separating mixtures
+                that look equivalent under one-step loss.
               </p>
               <p>
-                Once it generates the wrong state, that state becomes the input
-                for its next prediction. Talvitie gives
-                a precise example of how two models with the same one-step
-                errors can behave differently when run forward.
-                <a class="source" href="https://arxiv.org/abs/1612.06018"
-                  >Talvitie, §2.1</a
-                >
+                In a separate video comparison, single-step prediction error
+                barely separated two candidate mixtures, and short-horizon
+                memory probes also produced closely matched scores. The gap
+                emerged only when the model had to carry scene state across
+                longer sequences. Once an autoregressive model generates an
+                inaccurate state, that state becomes the conditioning input for
+                its next prediction, causing errors to accumulate over the
+                trajectory. Talvitie gives an explicit construction showing how
+                two dynamics models with identical one-step prediction errors
+                can behave very differently when rolled forward
+                <a class="cite" href="#ref-4">[4]</a>.
               </p>
               <p>
-                My next comparison would start both runs from the same weights,
-                keep the step budget fixed, and name the source giving up
-                updates. I’d score the same short and long rollouts in both runs
-                and repeat the current mixture to see how much its scores
-                normally move.
+                Determining whether a larger specialist share earns its update
+                budget therefore calls for a controlled comparison protocol
+                rather than a single-step loss sweep:
+              </p>
+              <ul class="key-list">
+                <li>
+                  <strong>Matched initialization and fixed update budget.</strong>
+                  Start all candidate runs from the same checkpoint, hold the
+                  total number of optimizer updates constant, and record
+                  explicitly which source yields updates when specialist share
+                  increases.
+                </li>
+                <li>
+                  <strong>Paired short- and long-horizon rollout scoring.</strong>
+                  Evaluate every run on both short-horizon probes and extended
+                  rollouts alongside general-domain checks, rather than ranking
+                  mixtures on held-out one-step error alone.
+                </li>
+                <li>
+                  <strong>Baseline variance calibration.</strong> Repeat the
+                  current baseline mixture to measure its normal score spread
+                  before attributing modest shifts to a change in data
+                  composition.
+                </li>
+              </ul>
+              <p class="section-bridge">
+                Evaluating mixtures under this protocol directly links data
+                allocation to closed-loop behavior, ensuring that additional
+                specialist weight is granted only when it resolves rollout
+                failures rather than polishing single-step loss.
+              </p>
+            </section>
+            <section id="conclusion">
+              <h2>Conclusion</h2>
+              <p>
+                In fixed-budget world-model training, lowering one-step
+                prediction error on specialist footage and improving physical
+                rollout capability do not move in lockstep. Once a small
+                specialist allocation supplies enough exposure to activate or
+                retain a target behavior, pushing that share higher delivers
+                diminishing coverage gains while withdrawing updates from
+                broadly transferable scene data.
               </p>
               <p>
-                My choice is the smallest tested share that reliably meets the
-                target while the behaviors served by the displaced data still
-                hold up. If both shares bring the ball back after a short
-                crossing, I keep the smaller one. I can spend the remaining
-                steps on the longer crossing where it still disappears.
+                Setting the specialist share therefore comes down to three
+                criteria:
               </p>
+              <ol class="summary-list">
+                <li>
+                  <strong>Coverage.</strong> Early specialist slots yield the
+                  steepest increase in event encounter probability; further
+                  gains depend on introducing unrepresented failure modes rather
+                  than oversampling already-covered transitions.
+                </li>
+                <li>
+                  <strong>Retention.</strong> Small replay fractions recover
+                  most prior-domain performance without impeding adaptation,
+                  turning “enough” into a measurable retention target.
+                </li>
+                <li>
+                  <strong>Opportunity cost and rollout validation.</strong>
+                  Reallocating updates incurs a first-order cost governed by
+                  <span class="inline-math">⟨<var>g</var><sub>T</sub>, <var>g</var><sub>S</sub> − <var>g</var><sub>B</sub>⟩</span>,
+                  and candidate mixtures must be separated on multi-step
+                  rollouts where compounding errors reveal gaps hidden by
+                  one-step loss.
+                </li>
+              </ol>
+              <p>
+                The resulting selection rule is straightforward: choose the
+                smallest tested share that reliably meets the target rollout
+                behavior while preserving the capabilities supported by the
+                displaced data. When a smaller and a larger share both preserve
+                object persistence across short occlusions, keep the smaller
+                allocation and spend the remaining update budget on the longer,
+                harder transitions where the model still fails.
+              </p>
+            </section>
+            <section id="references">
+              <h2>References</h2>
+              <ol class="references-list">
+                <li id="ref-1">
+                  Adam Ibrahim, Benjamin Thérien, Kshitij Gupta, Mats Leon
+                  Richter, Quentin Gregory Anthony, Eugene Belilovsky, Timothée
+                  Lesort, and Irina Rish, “Simple and Scalable Strategies to
+                  Continually Pre-train Large Language Models,”
+                  <em>Transactions on Machine Learning Research (TMLR)</em>,
+                  2024.
+                  <a
+                    class="source"
+                    href="https://openreview.net/pdf?id=DimPeeCxKO"
+                    >OpenReview (Table 4)</a
+                  >
+                </li>
+                <li id="ref-2">
+                  Jiasheng Ye, Peiju Liu, Tianxiang Sun, Jun Zhan, Yunhua Zhou,
+                  and Xipeng Qiu, “Data Mixing Laws: Optimizing Data Mixtures by
+                  Predicting Language Modeling Performance,” in
+                  <em>International Conference on Learning Representations (ICLR)</em>,
+                  2025.
+                  <a
+                    class="source"
+                    href="https://proceedings.iclr.cc/paper_files/paper/2025/file/cc84bfabe6389d8883fc2071c848f62a-Paper-Conference.pdf"
+                    >ICLR 2025 (Fig. 10)</a
+                  >
+                </li>
+                <li id="ref-3">
+                  Simin Fan, Matteo Pagliardini, and Martin Jaggi, “DoGE: Domain
+                  Reweighting with Generalization Estimation,” in
+                  <em>Proceedings of the 41st International Conference on Machine Learning (ICML)</em>,
+                  PMLR vol. 235, pp. 12895–12915, 2024.
+                  <a
+                    class="source"
+                    href="https://proceedings.mlr.press/v235/fan24e.html"
+                    >PMLR (§2)</a
+                  >
+                </li>
+                <li id="ref-4">
+                  Erik Talvitie, “Self-Correcting Models for Model-Based
+                  Reinforcement Learning,” in
+                  <em>Proceedings of the 31st AAAI Conference on Artificial Intelligence (AAAI)</em>,
+                  2017.
+                  <a class="source" href="https://arxiv.org/abs/1612.06018"
+                    >arXiv:1612.06018 (§2.1)</a
+                  >
+                </li>
+              </ol>
             </section>
           </div>
         </div>
